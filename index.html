@@ -4966,7 +4966,10 @@ function render() {
       ALL_PAGE_SECTIONS.forEach(id => {
         const el = document.getElementById(id);
         if (!el) return;
-        if (cfg.sections.includes(id)) el.style.removeProperty('display');
+        if (cfg.sections.includes(id)) {
+          if (id === 'sec-serve') el.style.display = (currentPage === 'merchant') ? 'block' : 'none';
+          else el.style.removeProperty('display');
+        }
         else el.style.display = 'none';
       });
     }
@@ -10637,6 +10640,13 @@ function showPage(page, linkEl) {
   const dz = document.getElementById('dropzone');
   if (dz) dz.style.display = cfg.uploadFocus ? '' : 'none';
 
+  // sec-serve: self-manages its empty state, force display after general loop
+  const serveSection = document.getElementById('sec-serve');
+  if (serveSection) {
+    serveSection.style.display = (page === 'merchant') ? 'block' : 'none';
+    serveSection.classList.toggle('visible', page === 'merchant');
+  }
+
   // Team scope bar: only on Summary (one team selector per tab)
   const scopeBar = document.getElementById('team-scope-bar');
   if (scopeBar) scopeBar.style.display = (page === 'summary') ? '' : 'none';
@@ -10657,13 +10667,6 @@ function showPage(page, linkEl) {
     if (pane) pane.classList.add('active');
     const tabBtn = document.querySelector(`[onclick*="${cfg.tableau}"]`);
     if (tabBtn) tabBtn.classList.add('active');
-  }
-
-  // sec-serve always manages its own empty state — force visible on merchant tab
-  const serveSection = document.getElementById('sec-serve');
-  if (serveSection) {
-    serveSection.style.display = (page === 'merchant') ? 'block' : 'none';
-    serveSection.classList.toggle('visible', page === 'merchant');
   }
 
   // Loyalty-only mode: hide the full tab bar so only the loyalty pane is visible
