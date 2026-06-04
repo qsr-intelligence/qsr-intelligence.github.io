@@ -3320,6 +3320,64 @@
     font-size: 12px;
   }
 
+
+  /* ── SERVE Scorecard ──────────────────────────────────────────────────── */
+  .serve-section { margin-top: 40px; }
+  .serve-header { display:flex; align-items:baseline; gap:16px; margin-bottom:24px; }
+  .serve-header h2 { font-family:"Fraunces",serif; font-weight:400; font-size:26px; letter-spacing:-0.01em; }
+  .serve-header .serve-eyebrow { font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:var(--ink-faint); }
+
+  .serve-empty { padding:48px 32px; text-align:center; border:2px dashed var(--rule-soft); background:var(--bg-card); margin-top:12px; }
+  .serve-empty .se-icon { font-size:36px; opacity:.25; margin-bottom:12px; }
+  .serve-empty h3 { font-family:"Fraunces",serif; font-size:20px; font-weight:400; color:var(--ink-soft); margin-bottom:6px; }
+  .serve-empty p { font-size:12px; color:var(--ink-faint); }
+
+  /* Score color dots */
+  .sd-1 { background:#c0392b; } .sd-2 { background:#e67e22; }
+  .sd-3 { background:#f39c12; } .sd-4 { background:#27ae60; }
+  .sd-5 { background:#1a6d3a; }
+  .serve-score-dot { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; color:white; font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:700; }
+  .serve-score-label-1 { color:#c0392b; } .serve-score-label-2 { color:#e67e22; }
+  .serve-score-label-3 { color:#f39c12; } .serve-score-label-4 { color:#27ae60; }
+  .serve-score-label-5 { color:#1a6d3a; }
+
+  /* Filter bar */
+  .serve-filter-bar { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:20px; }
+  .serve-filter-bar select, .serve-filter-bar input { font-family:"IBM Plex Sans",sans-serif; font-size:12px; padding:7px 10px; border:1px solid var(--rule-soft); background:var(--bg-card); color:var(--ink); }
+  .serve-count { font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--ink-faint); margin-left:auto; }
+
+  /* Merchant cards */
+  .serve-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:16px; }
+  .serve-card { background:var(--bg-card); border:1px solid var(--rule-soft); border-left:3px solid var(--rule-soft); padding:16px 18px; }
+  .serve-card.avg-low  { border-left-color:#c0392b; }
+  .serve-card.avg-dev  { border-left-color:#e67e22; }
+  .serve-card.avg-sat  { border-left-color:#f39c12; }
+  .serve-card.avg-str  { border-left-color:#27ae60; }
+  .serve-card.avg-exc  { border-left-color:#1a6d3a; }
+  .serve-card-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+  .serve-biz-name { font-family:"Fraunces",serif; font-size:15px; font-weight:500; color:var(--ink); }
+  .serve-biz-id { font-family:"JetBrains Mono",monospace; font-size:10px; color:var(--ink-faint); margin-top:2px; }
+  .serve-rep { font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-faint); }
+  .serve-avg-badge { font-family:"JetBrains Mono",monospace; font-size:20px; font-weight:700; }
+  .serve-dims { display:flex; gap:10px; margin-top:10px; }
+  .serve-dim { flex:1; text-align:center; }
+  .serve-dim-label { font-family:"JetBrains Mono",monospace; font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); margin-top:4px; display:block; }
+  .serve-notes { font-size:11px; color:var(--ink-soft); margin-top:10px; padding-top:10px; border-top:1px solid var(--rule-soft); line-height:1.5; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+
+  /* Summary SERVE widget */
+  .serve-summary-wrap { margin-top:24px; background:var(--bg-card); border:1px solid var(--rule-soft); padding:20px 24px; }
+  .serve-summary-head { display:flex; align-items:baseline; gap:12px; margin-bottom:16px; }
+  .serve-summary-title { font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:var(--ink-faint); }
+  .serve-dim-bars { display:flex; flex-direction:column; gap:8px; }
+  .serve-dim-row { display:grid; grid-template-columns:32px 1fr 48px; align-items:center; gap:12px; }
+  .serve-dim-key { font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:700; }
+  .serve-bar-track { height:8px; background:var(--rule-soft); border-radius:4px; overflow:hidden; }
+  .serve-bar-fill { height:100%; border-radius:4px; transition:width .4s ease; }
+  .serve-dim-val { font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--ink-soft); text-align:right; }
+  .serve-coaching-flag { margin-top:14px; padding:10px 14px; background:rgba(224,115,10,0.08); border-left:3px solid var(--amber); font-size:12px; color:var(--ink-soft); }
+  .serve-coaching-flag strong { color:var(--ink); }
+  .serve-theme-chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+  .serve-theme-chip { font-family:"JetBrains Mono",monospace; font-size:10px; padding:3px 10px; background:var(--bg-elevated); border:1px solid var(--rule-soft); color:var(--ink-soft); }
 </style>
 </head>
 <body>
@@ -3462,6 +3520,7 @@
       <div class="tldr-marquee" id="summary-marquee"></div>
       <div class="tldr-sub" id="summary-sub"></div>
       <div class="tldr-wow" id="summary-wow" style="display:none"></div>
+      <div id="serve-summary-widget" style="display:none;"></div>
       <div class="milestone-banner" id="milestone-banner" style="display:none"></div>
       <div class="tldr-stats" id="summary-stats"></div>
     </div>
@@ -3602,6 +3661,27 @@
       <div class="whatif-intro" id="whatif-intro"></div>
       <div class="whatif-summary" id="whatif-summary"></div>
       <div class="whatif-cards" id="whatif-cards"></div>
+    </div>
+  </section>
+
+
+  <!-- SERVE Merchant Sentiment Scorecard -->
+  <section class="section" id="sec-serve">
+    <div class="section-head" onclick="this.closest('.section').classList.toggle('collapsed')">
+      <span class="num">§ S</span>
+      <h2>SERVE Scorecard · Merchant Sentiment</h2>
+      <span class="tag" id="serve-tag">Awaiting SERVE CSV upload</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div id="serve-merchant-panel">
+        <div class="serve-empty">
+          <div class="se-icon">◈</div>
+          <h3>No SERVE data loaded</h3>
+          <p>Upload a SERVE scorecard CSV from the Uploads & Library tab.<br>
+          Expected columns: Business ID · Business Name · Rep · Call Summary · S · E · R · V · E</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -3935,6 +4015,11 @@ function detectFileType(headers, filename) {
   if (h.length === 1 && h[0] === 'calc') return { type: 'metadata' };
   // WoW weekly time-series file: first header is "values", contains "week"
   if (h[0] === 'values' || fname.includes('wow')) return { type: 'wowData' };
+  // SERVE scorecard CSV — business ID + rep + SERVE dimension scores
+  if (fname.includes('serve') && fname.endsWith('.csv')) return { type: 'serveData' };
+  if (h.some(c=>c.includes('serve')) && h.some(c=>c==='s'||c.includes('s score')||c.includes('set the table'))) return { type: 'serveData' };
+  // Also detect if it has business_id or business id + any score column
+  if ((h.includes('business_id')||h.includes('business id')) && h.some(c=>c==='s'||c.includes('s score')||c.includes('set the table'))) return { type: 'serveData' };
   return { type: 'unknown' };
 }
 
@@ -4760,6 +4845,21 @@ async function handleFiles(files) {
       } else if (parsed.detection.type === 'metadata') {
         chip.className = 'file-chip';
         chip.innerHTML = `<span class="f-name">${file.name}</span><span class="f-type" style="color:var(--ink-faint)">Skipped</span>`;
+      } else if (parsed.detection.type === 'serveData') {
+        const sd = processServeData(parsed);
+        if (sd) {
+          state.serveData = sd;
+          chip.className = 'file-chip ok';
+          chip.innerHTML = `<span class="f-name">${file.name}</span><span class="f-type">SERVE · ${sd.total} calls</span>`;
+          uploadedCount++;
+          renderServeMerchants();
+          renderServeSummary();
+          renderWeeklyChecklist();
+          toast('✓ SERVE data loaded · ' + sd.total + ' calls scored', 'ok');
+        } else {
+          chip.className = 'file-chip unknown';
+          chip.innerHTML = `<span class="f-name">${file.name}</span><span class="f-type" style="color:var(--amber)">SERVE — check column headers</span>`;
+        }
       } else {
         chip.className = 'file-chip unknown';
         chip.innerHTML = `<span class="f-name">${file.name}</span><span class="f-type" style="color:var(--amber)">Unknown</span>`;
@@ -4855,6 +4955,7 @@ function render() {
   if (hasForecast) renderWhatIf();
   if (hasDpLeads) renderDashPassLeads();
   renderWowPanel(); // always keep WoW section in sync with state
+  if (typeof renderServeMerchants === 'function') { renderServeMerchants(); renderServeSummary(); }
   renderJumpNav();
   updateScopeMeta();
 
@@ -10485,7 +10586,7 @@ const PAGE_MAP = {
   marketing:  { sections: ['sec-levers','sec-pipeline-pacing','sec-whatif','sec-detractors'], tableau: 'tb-mktg', title: 'Marketing <em>Revenue</em>',           eyebrow: 'IAM · QSR Team' },
   outputs:    { sections: ['sec-forecast'], tableau: null,                                                  title: 'Outputs &amp; <em>Inputs</em>',             eyebrow: 'IAM · QSR Team' },
   loyalty:    { sections: ['business-drivers'], tableau: 'tb-loyalty', loyaltyOnly: true,                  title: 'Loyalty <em>Campaigns</em>',               eyebrow: 'IAM · QSR Team' },
-  merchant:   { sections: ['sec-detractors','sec-soft-churn','sec-pipeline-pacing'], tableau: null,         title: 'Merchant <em>Insights</em>',               eyebrow: 'IAM · QSR Team' },
+  merchant:   { sections: ['sec-detractors','sec-soft-churn','sec-pipeline-pacing','sec-serve'], tableau: null,         title: 'Merchant <em>Insights</em>',               eyebrow: 'IAM · QSR Team' },
   engagement: { sections: ['sec-mxeng'], tableau: null,                                                     title: 'GOV <em>Engagement</em>',                  eyebrow: 'IAM · QSR Team' },
   levers:     { sections: ['sec-levers','sec-pipeline-pacing'], tableau: null,                              title: 'Gaps &amp; <em>Levers</em>',               eyebrow: 'IAM · QSR Team' },
   bizdriv:    { sections: ['business-drivers'], tableau: 'tb-loyalty',                                      title: 'Business <em>Drivers</em>',                eyebrow: 'IAM · QSR Team' },
@@ -10495,7 +10596,7 @@ const PAGE_MAP = {
 const ALL_PAGE_SECTIONS = [
   'sec-summary','sec-notes','sec-forecast','sec-levers','sec-pipeline-pacing',
   'sec-detractors','sec-soft-churn','sec-dpleads','sec-whatif','sec-mxeng',
-  'wow-summary','history-section','business-drivers'
+  'wow-summary','history-section','business-drivers','sec-serve'
 ];
 
 // Upload-area elements shown only on Uploads tab
@@ -10620,6 +10721,224 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ── Compact dropzone style for non-upload pages ──────────────────
+
+
+// ═══════════════════════════════════════════════════════════════
+//  SERVE SCORECARD ANALYZER
+// ═══════════════════════════════════════════════════════════════
+
+const SERVE_DIMS = [
+  { key: 'S', label: 'Set the Table',           short: 'S' },
+  { key: 'E', label: 'Expose Painpoints',        short: 'E' },
+  { key: 'R', label: 'Reveal the Trend',         short: 'R' },
+  { key: 'V', label: 'Voice Solutions',          short: 'V' },
+  { key: 'E2', label: 'Establish Next Steps',    short: 'E' },
+];
+
+const SERVE_LABELS = { 1:'Ineffective', 2:'Developing', 3:'Satisfactory', 4:'Strong', 5:'Exceptional' };
+
+const THEME_PATTERNS = [
+  { theme: 'Pricing / Fees',      words: ['fee','commission','cost','price','pricing','expensive','margin'] },
+  { theme: 'Order Volume',         words: ['order','volume','traffic','slow','low sales','demand'] },
+  { theme: 'Menu / Photos',        words: ['menu','photo','image','item','catalog','tablet'] },
+  { theme: 'Marketing / Promos',   words: ['promo','promotion','marketing','campaign','boost','ads'] },
+  { theme: 'DashPass / Loyalty',   words: ['dashpass','loyalty','dash pass','subscription','member'] },
+  { theme: 'Competition',          words: ['competitor','grubhub','uber eats','yelp','competition'] },
+  { theme: 'Operational Issues',   words: ['cancel','refund','complaint','issue','error','tablet','offline'] },
+  { theme: 'Growth Opportunity',   words: ['grow','expand','open','new','opportunity','potential'] },
+];
+
+function scoreColor(s) {
+  return ['','#c0392b','#e67e22','#f39c12','#27ae60','#1a6d3a'][s] || '#ccc';
+}
+
+function findHeader(headers, ...candidates) {
+  const h = headers.map(x => (x||'').toLowerCase().trim());
+  for (const c of candidates) {
+    const idx = h.findIndex(col => col === c || col.includes(c));
+    if (idx >= 0) return headers[idx];
+  }
+  return null;
+}
+
+function processServeData(parsed) {
+  const rows = (parsed.data || []).filter(r => Object.values(r).some(v => v && v.toString().trim()));
+  if (!rows.length) return null;
+
+  const keys = Object.keys(rows[0]);
+  const col = (...cands) => findHeader(keys, ...cands);
+
+  const cBizId   = col('business_id','business id','businessid','biz id','id');
+  const cBizName = col('business name','business_name','merchant','mx name','restaurant name','name');
+  const cRep     = col('rep','ao','account owner','am','sales rep');
+  const cDate    = col('date','call date','scored date','created at','timestamp');
+  const cS       = col('s score','score_s','serve_s',' s','set the table','s');
+  const cE       = col('e score','score_e','serve_e',' e','expose','e1');
+  const cR       = col('r score','score_r','serve_r',' r','reveal');
+  const cV       = col('v score','score_v','serve_v',' v','voice');
+  const cE2      = col('e2 score','score_e2','serve_e2','e2','establish','next steps');
+  const cNotes   = col('call summary','summary','notes','coaching','comments','feedback');
+  const cCallLink   = col('call link','call_link','call url','recording','gong link','chorus link','call recording');
+  const cCardLink   = col('scorecard link','scorecard_link','scorecard url','scorecard','rubric link','form link');
+
+  const toScore = v => { const n = parseInt((v||'').toString()); return (n>=1&&n<=5) ? n : null; };
+  const getCell = (row, c) => c ? (row[c]||'').toString().trim() : '';
+
+  const calls = rows.map(row => {
+    const scores = {
+      S:  toScore(getCell(row, cS)),
+      E:  toScore(getCell(row, cE)),
+      R:  toScore(getCell(row, cR)),
+      V:  toScore(getCell(row, cV)),
+      E2: toScore(getCell(row, cE2)),
+    };
+    const valid = Object.values(scores).filter(s => s !== null);
+    return {
+      businessId:   getCell(row, cBizId)   || '—',
+      businessName: getCell(row, cBizName) || 'Unknown Business',
+      rep:          getCell(row, cRep)     || 'Unknown Rep',
+      date:         getCell(row, cDate)    || '',
+      notes:        getCell(row, cNotes)   || '',
+      callLink:      getCell(row, cCallLink) || '',
+      scorecardLink: getCell(row, cCardLink) || '',
+      scores,
+      avg: valid.length ? parseFloat((valid.reduce((a,b)=>a+b,0)/valid.length).toFixed(1)) : null,
+    };
+  }).filter(c => c.businessId !== '—' || c.businessName !== 'Unknown Business');
+
+  if (!calls.length) return null;
+
+  // Team dimension averages
+  const dimTotals = { S:[], E:[], R:[], V:[], E2:[] };
+  calls.forEach(c => Object.entries(c.scores).forEach(([d,s]) => { if(s) dimTotals[d].push(s); }));
+  const avgScores = Object.fromEntries(Object.entries(dimTotals).map(([d,vals]) =>
+    [d, vals.length ? parseFloat((vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1)) : null]));
+
+  const sorted = Object.entries(avgScores).filter(([,v])=>v!==null).sort(([,a],[,b])=>a-b);
+  const weakest = sorted[0] || null;
+
+  // Theme extraction from call summaries
+  const allNotes = calls.map(c => c.notes.toLowerCase()).join(' ');
+  const themes = THEME_PATTERNS
+    .map(t => ({ theme: t.theme, count: t.words.filter(w => allNotes.includes(w)).length }))
+    .filter(t => t.count > 0)
+    .sort((a,b) => b.count - a.count)
+    .slice(0, 6);
+
+  // Group by rep
+  const byRep = {};
+  calls.forEach(c => { if(!byRep[c.rep]) byRep[c.rep]=[]; byRep[c.rep].push(c); });
+
+  return { calls, avgScores, weakest, themes, byRep, total: calls.length };
+}
+
+// Render per-merchant cards in Merchant Sentiment tab
+function renderServeMerchants() {
+  const panel = document.getElementById('serve-merchant-panel');
+  const tag   = document.getElementById('serve-tag');
+  if (!panel) return;
+
+  const sd = state.serveData;
+  if (!sd) {
+    panel.innerHTML = `<div class="serve-empty"><div class="se-icon">◈</div>
+      <h3>No SERVE data loaded</h3>
+      <p>Upload a SERVE scorecard CSV from the Uploads & Library tab.<br>
+      Expected columns: Business ID · Business Name · Rep · Call Summary · S · E · R · V · E</p></div>`;
+    if (tag) tag.textContent = 'Awaiting SERVE CSV upload';
+    return;
+  }
+
+  if (tag) tag.textContent = `${sd.total} call${sd.total===1?'':'s'} scored`;
+
+  const reps = ['All', ...Object.keys(sd.byRep).sort()];
+  const avgCls = avg => avg>=4.5?'avg-exc':avg>=3.5?'avg-str':avg>=2.5?'avg-sat':avg>=1.5?'avg-dev':'avg-low';
+
+  const cards = sd.calls.map(c => {
+    const cls = c.avg ? avgCls(c.avg) : '';
+    const dims = SERVE_DIMS.map(d => {
+      const sc = c.scores[d.key];
+      const dot = sc ? `<div class="serve-score-dot sd-${sc}">${sc}</div>` : `<div class="serve-score-dot" style="background:var(--rule-soft);color:var(--ink-faint)">—</div>`;
+      return `<div class="serve-dim">${dot}<span class="serve-dim-label">${d.short}</span></div>`;
+    }).join('');
+    const notesHtml = c.notes ? `<div class="serve-notes">${c.notes}</div>` : '';
+    return `<div class="serve-card ${cls}" data-rep="${c.rep}">
+      <div class="serve-card-top">
+        <div>
+          <div class="serve-biz-name">${c.businessName}</div>
+          <div class="serve-biz-id">${c.businessId}${c.date?' · '+c.date:''}</div>
+          <div class="serve-rep">${c.rep}</div>
+        </div>
+        ${c.avg!==null?`<div class="serve-avg-badge serve-score-label-${Math.round(c.avg)}">${c.avg}</div>`:''}
+      </div>
+      <div class="serve-dims">${dims}</div>
+      ${notesHtml}
+      ${(c.callLink||c.scorecardLink) ? '<div style="display:flex;gap:16px;margin-top:10px;padding-top:10px;border-top:1px solid var(--rule-soft);">'
+        + (c.callLink ? '<a href="'+c.callLink+'" target="_blank" rel="noopener" style="font-family:\'JetBrains Mono\',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);text-decoration:none;">▶ Call Recording</a>' : '')
+        + (c.scorecardLink ? '<a href="'+c.scorecardLink+'" target="_blank" rel="noopener" style="font-family:\'JetBrains Mono\',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);text-decoration:none;">◈ Scorecard</a>' : '')
+        + '</div>' : ''}
+    </div>`;
+  }).join('');
+
+  panel.innerHTML = `
+    <div class="serve-filter-bar">
+      <select id="serve-rep-filter" onchange="filterServeCards(this.value)">
+        ${reps.map(r=>`<option value="${r}">${r}</option>`).join('')}
+      </select>
+      <span class="serve-count" id="serve-card-count">${sd.total} merchant${sd.total===1?'':'s'}</span>
+    </div>
+    <div class="serve-grid" id="serve-card-grid">${cards}</div>`;
+}
+
+function filterServeCards(rep) {
+  const grid = document.getElementById('serve-card-grid');
+  const cnt  = document.getElementById('serve-card-count');
+  if (!grid) return;
+  let visible = 0;
+  grid.querySelectorAll('.serve-card').forEach(card => {
+    const show = rep === 'All' || card.dataset.rep === rep;
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+  if (cnt) cnt.textContent = visible + ' merchant' + (visible===1?'':'s');
+}
+
+// Render SERVE summary widget in Summary tab
+function renderServeSummary() {
+  const el = document.getElementById('serve-summary-widget');
+  if (!el) return;
+  const sd = state.serveData;
+  if (!sd) { el.style.display = 'none'; return; }
+
+  const dimBars = SERVE_DIMS.map(d => {
+    const val = sd.avgScores[d.key];
+    if (!val) return '';
+    const pct = ((val - 1) / 4 * 100).toFixed(0);
+    const color = scoreColor(Math.round(val));
+    return `<div class="serve-dim-row">
+      <span class="serve-dim-key" style="color:${color}">${d.short}</span>
+      <div class="serve-bar-track"><div class="serve-bar-fill" style="width:${pct}%;background:${color};"></div></div>
+      <span class="serve-dim-val">${val} <span style="font-size:9px;color:var(--ink-faint)">${SERVE_LABELS[Math.round(val)]||''}</span></span>
+    </div>`;
+  }).join('');
+
+  const coachTip = sd.weakest
+    ? `Coaching focus: <strong>${SERVE_DIMS.find(d=>d.key===sd.weakest[0])?.label || sd.weakest[0]}</strong> — team avg ${sd.weakest[1]} · ${SERVE_LABELS[Math.round(sd.weakest[1])]||''}`
+    : '';
+
+  const themeChips = sd.themes.map(t =>
+    `<span class="serve-theme-chip">${t.theme}</span>`).join('');
+
+  el.style.display = '';
+  el.innerHTML = `<div class="serve-summary-wrap">
+    <div class="serve-summary-head">
+      <span class="serve-summary-title">SERVE · Team Scorecard</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-faint)">${sd.total} call${sd.total===1?'':'s'}</span>
+    </div>
+    <div class="serve-dim-bars">${dimBars}</div>
+    ${coachTip ? `<div class="serve-coaching-flag">${coachTip}</div>` : ''}
+    ${themeChips ? `<div style="margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px;">Common call themes</div><div class="serve-theme-chips">${themeChips}</div>` : ''}
+  </div>`;
+}
 
 // Team scope tab wiring
 document.querySelectorAll('.ts-tab').forEach(tab => {
