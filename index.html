@@ -10641,6 +10641,14 @@ function showPage(page, linkEl) {
   const scopeBar = document.getElementById('team-scope-bar');
   if (scopeBar) scopeBar.style.display = (page === 'summary') ? '' : 'none';
 
+  // Empty state: hide on tabs that don't need a data upload prompt
+  const emptyState = document.getElementById('empty-state');
+  if (emptyState) {
+    const hideEmptyOn = ['bizdriv','loyalty','engagement','bizdriv'];
+    if (hideEmptyOn.includes(page)) emptyState.style.display = 'none';
+    else emptyState.style.removeProperty('display');
+  }
+
   // Activate tableau tab if specified
   if (cfg.tableau) {
     document.querySelectorAll('.tableau-tab').forEach(t => t.classList.remove('active'));
