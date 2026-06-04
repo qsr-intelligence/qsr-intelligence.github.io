@@ -5000,7 +5000,8 @@ function render() {
   document.getElementById('empty-state').style.display = (hasData || _forceHideEmpty) ? 'none' : 'block';
   document.getElementById('sec-summary').classList.toggle('visible', hasData);
   document.getElementById('sec-notes').classList.toggle('visible', hasData);
-  document.getElementById('sec-mxeng').classList.toggle('visible', hasGovTT);
+  // sec-mxeng: always visible on engagement page (handles empty state itself); otherwise only with data
+  document.getElementById('sec-mxeng').classList.toggle('visible', hasGovTT || currentPage === 'engagement');
   // Forecast section now also surfaces the Goals reference (sub-toggle in §01) when
   // perfDetail files are loaded, so it can render with either forecast OR goals data.
   document.getElementById('sec-forecast').classList.toggle('visible', hasForecast || hasPerfDetail);
