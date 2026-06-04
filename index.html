@@ -10903,7 +10903,7 @@ function renderServeMerchants() {
   if (tag) tag.textContent = `${sd.total} call${sd.total===1?'':'s'} scored`;
 
   const reps = ['All', ...Object.keys(sd.byRep).sort()];
-  const avgCls = () => '';
+  const avgCls = avg => avg>=4.5?'avg-exc':avg>=3.5?'avg-str':avg>=2.5?'avg-sat':avg>=1.5?'avg-dev':'avg-low';
 
   const cards = sd.calls.map(c => {
     const cls = c.avg ? avgCls(c.avg) : '';
@@ -11486,7 +11486,7 @@ renderHistorySection();
           const thead = document.getElementById('loy-thead');
           if(mode==='active') {
             thead.innerHTML = `<tr>
-              <th>Business</th><th>Score</th><th>Program</th><th>L30D AOV</th>
+              <th>Business</th><th>Program</th><th>L30D AOV</th>
               <th>Reward %</th><th>Threshold</th><th>Recommendation</th>
               <th>QTD Pacing</th><th>QTD Actuals</th><th>AM</th>
             </tr>`;
@@ -11503,7 +11503,7 @@ renderHistorySection();
           if(mode==='active') {
             tbody.innerHTML = slice.map(r=>`<tr>
               <td><strong>${r[1]||'—'}</strong><br><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-faint)">#${r[0]}</span></td>
-              <td><div class="loy-score-bar"><div class="loy-track"><div class="loy-fill" style="width:${r[3]}%;background:${scoreColor(r[3])}"></div></div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:${scoreColor(r[3])};">${r[3]}</span></div></td>
+
               <td><span class="loy-badge neu">${r[8]||'—'}</span></td>
               <td>${r[6]?'$'+r[6].toFixed(2):'—'}</td>
               <td>${r[4]?`<span class="loy-badge ${parseFloat(r[4])>=10?'ok':'bad'}">${r[4]}</span>`:'—'}</td>
