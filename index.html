@@ -10920,7 +10920,7 @@ function renderServeMerchants() {
           <div class="serve-biz-id">${c.businessId}${c.date?' · '+c.date:''}</div>
           <div class="serve-rep">${c.rep}</div>
         </div>
-
+        ${c.avg!==null?`<div class="serve-avg-badge serve-score-label-${Math.round(c.avg)}">${c.avg}</div>`:''}
       </div>
       <div class="serve-dims">${dims}</div>
       ${notesHtml}
