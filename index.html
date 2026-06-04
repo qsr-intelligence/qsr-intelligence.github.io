@@ -12024,6 +12024,42 @@ const _origRender = typeof renderAll === 'function' ? renderAll : null;
 function renderAll() { if (_origRender) _origRender(); renderWowPanel(); }
 document.addEventListener('DOMContentLoaded', () => setTimeout(renderWowPanel, 500));
 
+// ═══════════════════════════════════════════════════════════════════
+//  LIVE DATA — fetch data.json pushed by scheduled Sigma export
+// ═══════════════════════════════════════════════════════════════════
+
+async function fetchLiveData() {
+  try {
+    const resp = await fetch('/data.json?t=' + Date.now());
+    if (!resp.ok) return; // no data.json yet — silent fail
+    const d = await resp.json();
+    let updated = false;
+
+    if (d.govEngagement && d.govEngagement.reps && d.govEngagement.reps.length) {
+      state.govEngagement = d.govEngagement;
+      updated = true;
+    }
+    if (d.forecastHistory && d.forecastHistory.length) {
+      state.forecastHistory = d.forecastHistory;
+      updated = true;
+    }
+    if (updated) {
+      saveState();
+      render();
+      renderWeeklyChecklist();
+      const updatedAt = d.updatedAt ? ' · ' + d.updatedAt.slice(0,10) : '';
+      toast('✓ Live data loaded from Sigma' + updatedAt, 'ok');
+    }
+  } catch(e) {
+    // Network error or no data.json — silent fail, manual upload still works
+  }
+}
+
+// Fetch live data on page load (after state is restored from localStorage)
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(fetchLiveData, 800);
+});
+
 </script>
 </body>
 </html>
