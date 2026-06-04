@@ -10765,13 +10765,23 @@ function showPage(page, linkEl) {
   const dz = document.getElementById('dropzone');
   if (dz) dz.style.display = cfg.uploadFocus ? '' : 'none';
 
-  if (page === 'engagement' && typeof renderRepActivity === 'function') { setTimeout(renderRepActivity, 100); }
-  // sec-mxeng: force visible on engagement tab so it shows even before render() runs
+  // Engagement tab: force section visible and render regardless of load timing
   const mxengSection = document.getElementById('sec-mxeng');
-  if (mxengSection) {
-    const showMxeng = (page === 'engagement') && !!state.govEngagement;
-    mxengSection.style.display = showMxeng ? 'block' : (page === 'engagement' ? '' : 'none');
-    if (showMxeng) mxengSection.classList.add('visible');
+  if (page === 'engagement') {
+    if (mxengSection) {
+      mxengSection.classList.add('visible');
+      mxengSection.style.display = 'block';
+    }
+    // Render immediately if data exists, then again after fetch window
+    const _doEngRender = () => {
+      if (state.govEngagement && typeof renderMxEngagement === 'function') renderMxEngagement();
+      if (window._repActivityData && typeof renderRepActivity === 'function') renderRepActivity();
+    };
+    _doEngRender();
+    setTimeout(_doEngRender, 300);   // retry after partial load
+    setTimeout(_doEngRender, 1200);  // retry after full fetch window
+  } else if (mxengSection) {
+    mxengSection.style.display = (state.govEngagement) ? '' : 'none';
   }
 
   // sec-serve: self-manages its empty state, force display after general loop
@@ -12088,13 +12098,14 @@ async function fetchLiveData() {
       saveState();
       render();
       renderWeeklyChecklist();
-      // If on engagement tab and GOV data just loaded, force the section visible
-      if (d.govEngagement && currentPage === 'engagement') {
-        const mxEl = document.getElementById('sec-mxeng');
-        if (mxEl) { mxEl.classList.add('visible'); mxEl.style.display = 'block'; }
+      // Always update engagement section when data arrives, no matter which tab is active
+      const _mxEl = document.getElementById('sec-mxeng');
+      if (_mxEl && (d.govEngagement || d.repActivity)) {
+        if (currentPage === 'engagement') {
+          _mxEl.classList.add('visible');
+          _mxEl.style.display = 'block';
+        }
         if (typeof renderMxEngagement === 'function') renderMxEngagement();
-        if (typeof renderRepActivity === 'function') renderRepActivity();
-      } else if (d.repActivity && currentPage === 'engagement') {
         if (typeof renderRepActivity === 'function') renderRepActivity();
       }
       const updatedAt = d.updatedAt ? ' · ' + d.updatedAt.slice(0,10) : '';
