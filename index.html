@@ -10532,9 +10532,9 @@ function showPage(page, linkEl) {
     el.style.display = cfg.uploadFocus ? '' : 'none';
   });
 
-  // Dropzone: visible on all pages but compact on non-upload pages
+  // Dropzone: only visible on Uploads & Library tab
   const dz = document.getElementById('dropzone');
-  if (dz) dz.classList.toggle('dz-compact', !cfg.uploadFocus);
+  if (dz) dz.style.display = cfg.uploadFocus ? '' : 'none';
 
   // Activate tableau tab if specified
   if (cfg.tableau) {
