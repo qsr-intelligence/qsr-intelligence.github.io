@@ -4924,7 +4924,10 @@ function render() {
   const hasPerfDetail = !!(state.current.perfDetail && (state.current.perfDetail.input || state.current.perfDetail.output));
   const hasData = hasOverall || hasMerchant || hasForecast || hasGovTT || hasLevers || hasDpLeads;
 
-  document.getElementById('empty-state').style.display = hasData ? 'none' : 'block';
+  // Hide empty-state on all tabs except Summary and Uploads
+  const _showEmptyPages = ['summary','uploads'];
+  const _forceHideEmpty = typeof currentPage !== 'undefined' && !_showEmptyPages.includes(currentPage);
+  document.getElementById('empty-state').style.display = (hasData || _forceHideEmpty) ? 'none' : 'block';
   document.getElementById('sec-summary').classList.toggle('visible', hasData);
   document.getElementById('sec-notes').classList.toggle('visible', hasData);
   document.getElementById('sec-mxeng').classList.toggle('visible', hasGovTT);
