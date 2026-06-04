@@ -3212,6 +3212,18 @@
     margin-top: 2px;
     line-height: 1.4;
   }
+  .ucl-scheduled-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-family: "JetBrains Mono", monospace; font-size: 9px;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--green); margin-top: 3px;
+  }
+  .ucl-upload-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-family: "JetBrains Mono", monospace; font-size: 9px;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--amber); margin-top: 3px;
+  }
   .ucl-upload-time {
     font-family: "JetBrains Mono", monospace;
     font-size: 9px;
@@ -3523,7 +3535,7 @@
   <div class="upload-checklist" id="upload-checklist">
     <div class="ucl-header">
       <span class="ucl-title">📋 Weekly Upload Checklist</span>
-      <span class="ucl-status-summary" id="ucl-summary">0 of 4 files ready</span>
+      <span class="ucl-status-summary" id="ucl-summary">0 of 9 reports ready</span>
     </div>
     <div class="ucl-items" id="ucl-items">
       <!-- populated by renderWeeklyChecklist() -->
@@ -5874,34 +5886,80 @@ function renderWeeklyChecklist() {
   const summary   = document.getElementById('ucl-summary');
   if (!container || !summary) return;
 
+  // scheduled = auto-pulled from Sigma every Thursday 6am
+  // upload = must be manually exported from Sigma and dropped here
   const checks = [
     {
-      id: 'wow',
-      name: 'IAM Wow.csv',
-      desc: 'QTD pacing % for all 8 Combined metrics (WoW section)',
-      done: !!state.wowFileData,
-      time: state.wowFileData ? state.wowFileData.latestDate : null,
-    },
-    {
-      id: 'output',
-      name: 'Output Performance.csv',
-      desc: 'Manager-level output metrics — populates team tabs',
-      done: !!(state.current.perfDetail && state.current.perfDetail.output),
-      time: state.current.weekEnding || null,
-    },
-    {
       id: 'overall',
-      name: 'Overall Performance.csv',
-      desc: 'Per-rep OKR pacing across all goal types',
+      name: 'Overall Performance',
+      source: 'AM Incentive Dash → Overall Performance',
+      scheduled: false,
       done: !!(state.current.overall && !state.current.overall._fromPerfDetail),
       time: state.current.weekEnding || null,
     },
     {
+      id: 'input',
+      name: 'Input Performance',
+      source: 'AM Incentive Dash → Input Performance',
+      scheduled: false,
+      done: !!(state.current.perfDetail && state.current.perfDetail.input),
+      time: state.current.weekEnding || null,
+    },
+    {
+      id: 'output',
+      name: 'Output Performance',
+      source: 'AM Incentive Dash → Output Performance',
+      scheduled: false,
+      done: !!(state.current.perfDetail && state.current.perfDetail.output),
+      time: state.current.weekEnding || null,
+    },
+    {
+      id: 'platform',
+      name: 'Platform Revenue',
+      source: 'AM Incentive Dash → Platform Revenue',
+      scheduled: false,
+      done: !!(state.current.merchantFiles && state.current.merchantFiles['Platform Revenue']),
+      time: state.current.weekEnding || null,
+    },
+    {
+      id: 'promo',
+      name: 'Promo Revenue',
+      source: 'AM Incentive Dash → Promo Revenue',
+      scheduled: false,
+      done: !!(state.current.merchantFiles && state.current.merchantFiles['Promotion Revenue']),
+      time: state.current.weekEnding || null,
+    },
+    {
+      id: 'sponsored',
+      name: 'Sponsored Listing Revenue',
+      source: 'AM Incentive Dash → Sponsored Listing Revenue',
+      scheduled: false,
+      done: !!(state.current.merchantFiles && state.current.merchantFiles['Sponsored Listing Revenue']),
+      time: state.current.weekEnding || null,
+    },
+    {
       id: 'forecast',
-      name: 'EOQ Forecast.csv',
-      desc: 'End-of-quarter forecast & priorities engine',
+      name: 'EOQ Forecast',
+      source: 'AMPD → EOQ Forecast',
+      scheduled: true,
       done: state.forecastHistory.length > 0,
       time: state.forecastHistory.length ? state.forecastHistory[0].date : null,
+    },
+    {
+      id: 'levers',
+      name: 'Lever Stage History',
+      source: 'AMPD → Exports → Lever Stage History',
+      scheduled: false,
+      done: !!state.leverPipeline,
+      time: state.leverPipeline ? state.leverPipeline.latestWeek : null,
+    },
+    {
+      id: 'gov',
+      name: 'GOV Engagement',
+      source: 'Engagement Dash → GOV Engagement',
+      scheduled: true,
+      done: !!state.govEngagement,
+      time: state.govEngagement ? state.govEngagement.uploadedAt : null,
     },
   ];
 
@@ -5909,21 +5967,26 @@ function renderWeeklyChecklist() {
   const allDone = doneCount === checks.length;
 
   if (allDone) {
-    summary.innerHTML = `<span class="ucl-ready">✓ All ${checks.length} files ready</span>`;
+    summary.innerHTML = `<span class="ucl-ready">✓ All ${checks.length} reports ready</span>`;
   } else {
-    summary.innerHTML = `${doneCount} of ${checks.length} files ready`;
+    summary.innerHTML = `${doneCount} of ${checks.length} reports ready`;
   }
 
-  container.innerHTML = checks.map(c => `
-    <div class="ucl-item ${c.done ? 'done' : ''}">
+  container.innerHTML = checks.map(c => {
+    const badge = c.done && c.time
+      ? `<div class="ucl-upload-time">Loaded · ${c.time}</div>`
+      : c.scheduled
+        ? `<div class="ucl-scheduled-badge">🔄 Scheduled · Thu 6am</div>`
+        : `<div class="ucl-upload-badge">↑ Upload needed</div>`;
+    return `<div class="ucl-item ${c.done ? 'done' : ''}">
       <div class="ucl-icon">${c.done ? '✓' : '○'}</div>
       <div class="ucl-text">
         <div class="ucl-file-name">${c.name}</div>
-        <div class="ucl-file-desc">${c.desc}</div>
-        ${c.done && c.time ? `<div class="ucl-upload-time">Loaded · ${c.time}</div>` : ''}
+        <div class="ucl-file-desc">${c.source}</div>
+        ${badge}
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
 /* ──────────────────────────────────────────────────────────────────
