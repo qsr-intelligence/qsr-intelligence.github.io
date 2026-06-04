@@ -5248,85 +5248,6 @@
             "QTD Goal": null
           }
         },
-        "Andrew Shulman": {
-          "Marketplace GOV": {
-            "pct": 1.0475949340579753,
-            "forecastDollar": 45996491.65939355,
-            "eoqGoal": 39884757.56,
-            "EOQ Forecast to Goal (%)": 1.1532348313813732,
-            "EOQ Forecast to Goal ($)": 45996491.65939355,
-            "EOQ Goal": 39884757.56,
-            "QTD Pacing": 1.0475949340579753,
-            "QTD Actuals": 28898046.08,
-            "QTD Goal": 27585133.471446075
-          },
-          "Platform Revenue": {
-            "pct": 0.964364113141086,
-            "forecastDollar": 362874.03519716207,
-            "eoqGoal": 375850.75,
-            "EOQ Forecast to Goal (%)": 0.9654737557319284,
-            "EOQ Forecast to Goal ($)": 362874.03519716207,
-            "EOQ Goal": 375850.75,
-            "QTD Pacing": 0.964364113141086,
-            "QTD Actuals": 255531.69577624602,
-            "QTD Goal": 264974.2895802489
-          },
-          "Promotion Revenue": {
-            "pct": 0.9852303756288482,
-            "forecastDollar": 2132816.996233685,
-            "eoqGoal": 2121015.16,
-            "EOQ Forecast to Goal (%)": 1.0055642394530009,
-            "EOQ Forecast to Goal ($)": 2132816.996233685,
-            "EOQ Goal": 2121015.16,
-            "QTD Pacing": 0.9852303756288482,
-            "QTD Actuals": 1425904.6099999999,
-            "QTD Goal": 1447280.3978357653
-          },
-          "Sponsored Listing Revenue": {
-            "pct": 0.86465863467276,
-            "forecastDollar": 1034873.6822363945,
-            "eoqGoal": 1184168.79,
-            "EOQ Forecast to Goal (%)": 0.8739241322484056,
-            "EOQ Forecast to Goal ($)": 1034873.6822363945,
-            "EOQ Goal": 1184168.79,
-            "QTD Pacing": 0.86465863467276,
-            "QTD Actuals": 694162.3300000001,
-            "QTD Goal": 802816.6286256006
-          },
-          "Dashpass Selection": {
-            "pct": null,
-            "forecastDollar": null,
-            "eoqGoal": null,
-            "EOQ Forecast to Goal (%)": null,
-            "EOQ Forecast to Goal ($)": null,
-            "EOQ Goal": null,
-            "QTD Pacing": null,
-            "QTD Actuals": null,
-            "QTD Goal": null
-          },
-          "Photo": {
-            "pct": 2.2439410641177915,
-            "forecastDollar": 455.3654504770847,
-            "eoqGoal": 179.0,
-            "EOQ Forecast to Goal (%)": 2.5439410641177918,
-            "EOQ Forecast to Goal ($)": 455.3654504770847,
-            "EOQ Goal": 179.0,
-            "QTD Pacing": 2.2439410641177915,
-            "QTD Actuals": 262.0,
-            "QTD Goal": 116.7588597533
-          },
-          "Inflation": {
-            "pct": 1.8794693637650068,
-            "forecastDollar": 692.4749813970388,
-            "eoqGoal": 320.0,
-            "EOQ Forecast to Goal (%)": 2.163984316865746,
-            "EOQ Forecast to Goal ($)": 692.4749813970388,
-            "EOQ Goal": 320.0,
-            "QTD Pacing": 1.8794693637650068,
-            "QTD Actuals": 345.0,
-            "QTD Goal": 183.562449408
-          }
-        },
         "Austin Davis": {
           "Marketplace GOV": {
             "pct": 1.0007285844568672,
@@ -6352,85 +6273,6 @@
             "QTD Pacing": 0.36838027562557574,
             "QTD Actuals": 44.0,
             "QTD Goal": 119.441791299168
-          }
-        },
-        "Andrew Pavlat": {
-          "Marketplace GOV": {
-            "pct": 0.999627722615748,
-            "forecastDollar": 85957841.72736369,
-            "eoqGoal": 85959931.93,
-            "EOQ Forecast to Goal (%)": 0.9999756839891635,
-            "EOQ Forecast to Goal ($)": 85957841.72736369,
-            "EOQ Goal": 85959931.93,
-            "QTD Pacing": 0.999627722615748,
-            "QTD Actuals": 59429556.30999999,
-            "QTD Goal": 59451688.82920669
-          },
-          "Platform Revenue": {
-            "pct": 1.1579360399040837,
-            "forecastDollar": 1132640.8808729136,
-            "eoqGoal": 955927.07,
-            "EOQ Forecast to Goal (%)": 1.1848611849363295,
-            "EOQ Forecast to Goal ($)": 1132640.8808729136,
-            "EOQ Goal": 955927.07,
-            "QTD Pacing": 1.1579360399040837,
-            "QTD Actuals": 780364.7555069228,
-            "QTD Goal": 673927.3402109183
-          },
-          "Promotion Revenue": {
-            "pct": 0.997336220682262,
-            "forecastDollar": 4938201.491896137,
-            "eoqGoal": 4950270.82,
-            "EOQ Forecast to Goal (%)": 0.9975618852901742,
-            "EOQ Forecast to Goal ($)": 4938201.491896137,
-            "EOQ Goal": 4950270.82,
-            "QTD Pacing": 0.997336220682262,
-            "QTD Actuals": 3368832.8100000005,
-            "QTD Goal": 3377830.605305235
-          },
-          "Sponsored Listing Revenue": {
-            "pct": 0.9904119472786268,
-            "forecastDollar": 2371423.0939248144,
-            "eoqGoal": 2393207.77,
-            "EOQ Forecast to Goal (%)": 0.9908972900939622,
-            "EOQ Forecast to Goal ($)": 2371423.0939248144,
-            "EOQ Goal": 2393207.77,
-            "QTD Pacing": 0.9904119472786268,
-            "QTD Actuals": 1606937.6400000001,
-            "QTD Goal": 1622494.199929042
-          },
-          "Dashpass Selection": {
-            "pct": null,
-            "forecastDollar": null,
-            "eoqGoal": null,
-            "EOQ Forecast to Goal (%)": null,
-            "EOQ Forecast to Goal ($)": null,
-            "EOQ Goal": null,
-            "QTD Pacing": null,
-            "QTD Actuals": null,
-            "QTD Goal": null
-          },
-          "Photo": {
-            "pct": 1.0868026279509115,
-            "forecastDollar": 317.3463673616662,
-            "eoqGoal": 292.0,
-            "EOQ Forecast to Goal (%)": 1.0868026279509115,
-            "EOQ Forecast to Goal ($)": 317.3463673616662,
-            "EOQ Goal": 292.0,
-            "QTD Pacing": 1.0868026279509115,
-            "QTD Actuals": 207.0,
-            "QTD Goal": 190.4669667484
-          },
-          "Inflation": {
-            "pct": 0.5065060758114615,
-            "forecastDollar": 498.0,
-            "eoqGoal": 1714.0,
-            "EOQ Forecast to Goal (%)": 0.29054842473745623,
-            "EOQ Forecast to Goal ($)": 498.0,
-            "EOQ Goal": 1714.0,
-            "QTD Pacing": 0.5065060758114615,
-            "QTD Actuals": 498.0,
-            "QTD Goal": 983.2063696416
           }
         },
         "Brodrick Bynum": {
@@ -10940,5 +10782,5 @@
       "total": {}
     }
   ],
-  "updatedAt": "2026-06-04T16:45:27.305679"
+  "updatedAt": "2026-06-04T16:54:13.624231"
 }
