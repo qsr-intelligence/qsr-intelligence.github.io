@@ -10659,6 +10659,13 @@ function showPage(page, linkEl) {
     if (tabBtn) tabBtn.classList.add('active');
   }
 
+  // sec-serve always manages its own empty state — force visible on merchant tab
+  const serveSection = document.getElementById('sec-serve');
+  if (serveSection) {
+    serveSection.style.display = (page === 'merchant') ? 'block' : 'none';
+    serveSection.classList.toggle('visible', page === 'merchant');
+  }
+
   // Loyalty-only mode: hide the full tab bar so only the loyalty pane is visible
   const tabBar = document.querySelector('#business-drivers .tableau-tabs');
   if (tabBar) tabBar.style.display = cfg.loyaltyOnly ? 'none' : '';
