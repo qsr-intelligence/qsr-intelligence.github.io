@@ -10887,6 +10887,37 @@ document.addEventListener('DOMContentLoaded', () => {
 // ── Compact dropzone style for non-upload pages ──────────────────
 
 
+function renderRepActivity() {
+  const container = document.getElementById('rep-activity-table');
+  if (!container) return;
+  const data = window._repActivityData;
+  if (!data || !data.length) {
+    if (!window._repActivityRetries) window._repActivityRetries = 0;
+    if (window._repActivityRetries < 5) { window._repActivityRetries++; setTimeout(renderRepActivity, 700); }
+    container.innerHTML = '<div style="padding:20px;text-align:center;color:var(--ink-faint);font-style:italic;">Loading activity data...</div>';
+    return;
+  }
+  window._repActivityRetries = 0;
+  const EXCL = new Set(["Andrew Shulman","Andrew Pavlat"]);
+  const rows = data.filter(r => r["Rep Name"] && !EXCL.has(r["Rep Name"]) && !isHardExcluded(r["Rep Name"]));
+  if (!rows.length) { container.innerHTML = '<div style="padding:20px;text-align:center;color:var(--ink-faint);">No activity data.</div>'; return; }
+  const bySubteam = {};
+  rows.forEach(r => { const sub = r.Subteam || "Other"; if (!bySubteam[sub]) bySubteam[sub] = []; bySubteam[sub].push(r); });
+  const maxCalls = Math.max(...rows.map(r => r.Calls || 0), 1);
+  let h = '<table class="activity-table"><thead><tr><th>Rep</th><th class="num">Bus. Reviews</th><th>Calls</th><th class="num">Strategy Calls</th><th class="num">Emails</th></tr></thead><tbody>';
+  Object.entries(bySubteam).sort(([a],[b])=>a.localeCompare(b)).forEach(([sub,reps]) => {
+    h += '<tr class="subteam-row"><td colspan="5">' + sub + '</td></tr>';
+    reps.sort((a,b)=>(b.Calls||0)-(a.Calls||0)).forEach(r => {
+      const calls = r.Calls||0, bw = Math.round((calls/maxCalls)*80), zc = v=>v?v:'<span class="activity-zero">—</span>';
+      h += '<tr><td>' + r["Rep Name"] + '</td><td class="num">' + zc(r["Business Reviews"]) + '</td><td><span class="activity-bar" style="width:' + bw + 'px"></span>' + (calls||'<span class="activity-zero">—</span>') + '</td><td class="num">' + zc(r["Strategy Calls"]) + '</td><td class="num">' + zc(r.Emails) + '</td></tr>';
+    });
+  });
+  h += '</tbody></table>';
+  container.innerHTML = h;
+  const hdr = document.getElementById('rep-activity-header');
+  if (hdr) hdr.textContent = rows.length + ' reps';
+}
+
 // ═══════════════════════════════════════════════════════════════
 //  SERVE SCORECARD ANALYZER
 // ═══════════════════════════════════════════════════════════════
