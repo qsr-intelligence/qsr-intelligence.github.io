@@ -10900,7 +10900,7 @@ function renderRepActivity() {
   }
   window._repActivityRetries = 0;
   const EXCL = new Set(["Andrew Shulman","Andrew Pavlat"]);
-  const rows = data.filter(r => r["Rep Name"] && !EXCL.has(r["Rep Name"]) && !isHardExcluded(r["Rep Name"]));
+  const rows = data.filter(r => r["Rep Name"] && !EXCL.has(r["Rep Name"]) && !isHardExcluded(r["Rep Name"]) && (r.Team || "").toLowerCase().includes("sm - core"));
   if (!rows.length) { container.innerHTML = '<div style="padding:20px;text-align:center;color:var(--ink-faint);">No activity data.</div>'; return; }
   const bySubteam = {};
   rows.forEach(r => { const sub = r.Subteam || "Other"; if (!bySubteam[sub]) bySubteam[sub] = []; bySubteam[sub].push(r); });
