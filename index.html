@@ -3437,6 +3437,52 @@
   .activity-table .subteam-row td { background:var(--bg-elevated); font-family:"JetBrains Mono",monospace; font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); padding:5px 10px; }
   .activity-bar { display:inline-block; height:4px; background:var(--accent); opacity:.7; border-radius:2px; margin-right:6px; vertical-align:middle; }
   .activity-zero { color:var(--ink-faint); }
+
+  /* ── Optimizations Tab ─────────────────────────────────────────────────── */
+  .opt-empty { padding:48px 32px; text-align:center; border:2px dashed var(--rule-soft); background:var(--bg-card); }
+  .opt-empty-icon { font-size:40px; opacity:.2; margin-bottom:12px; }
+  .opt-empty h3 { font-family:"Fraunces",serif; font-size:20px; font-weight:400; color:var(--ink-soft); margin-bottom:6px; }
+  .opt-empty p { font-size:12px; color:var(--ink-faint); max-width:440px; margin:0 auto; line-height:1.6; }
+
+  .opt-controls { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:20px; }
+  .opt-controls select, .opt-controls input { font-family:"IBM Plex Sans",sans-serif; font-size:12px; padding:7px 10px; border:1px solid var(--rule-soft); background:var(--bg-card); color:var(--ink); }
+  .opt-count { font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--ink-faint); margin-left:auto; }
+
+  .opt-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(360px, 1fr)); gap:16px; }
+  .opt-card { background:var(--bg-card); border:1px solid var(--rule-soft); border-left:4px solid var(--rule-soft); padding:16px 18px; }
+  .opt-card.score-0 { border-left-color:var(--green); }
+  .opt-card.score-1 { border-left-color:var(--green); }
+  .opt-card.score-2 { border-left-color:var(--amber); }
+  .opt-card.score-3 { border-left-color:var(--amber); }
+  .opt-card.score-4 { border-left-color:var(--red); }
+  .opt-card.score-5 { border-left-color:var(--red); }
+  .opt-card-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+  .opt-biz-name { font-family:"Fraunces",serif; font-size:14px; font-weight:500; color:var(--ink); }
+  .opt-biz-meta { font-family:"JetBrains Mono",monospace; font-size:10px; color:var(--ink-faint); margin-top:2px; }
+  .opt-score-badge { font-family:"JetBrains Mono",monospace; font-size:22px; font-weight:700; line-height:1; }
+  .opt-score-badge.s0,.opt-score-badge.s1 { color:var(--green); }
+  .opt-score-badge.s2,.opt-score-badge.s3 { color:var(--amber); }
+  .opt-score-badge.s4,.opt-score-badge.s5 { color:var(--red); }
+  .opt-flags { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .opt-flag { font-size:11px; padding:3px 8px; border-radius:2px; font-family:"JetBrains Mono",monospace; letter-spacing:.04em; }
+  .opt-flag.photo  { background:rgba(29,45,68,0.08); color:var(--navy); }
+  .opt-flag.down   { background:rgba(168,28,32,0.08); color:var(--red); }
+  .opt-flag.mi     { background:rgba(179,115,10,0.12); color:var(--amber); }
+  .opt-flag.cancel { background:rgba(168,28,32,0.08); color:var(--red); }
+  .opt-flag.rating { background:rgba(47,93,58,0.08); color:var(--green); }
+  .opt-flag.revenue{ background:rgba(29,45,68,0.08); color:var(--navy); }
+  .opt-metrics { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-top:10px; padding-top:10px; border-top:1px solid var(--rule-soft); }
+  .opt-metric { text-align:center; }
+  .opt-metric-val { font-family:"JetBrains Mono",monospace; font-size:13px; font-weight:600; color:var(--ink); }
+  .opt-metric-val.warn { color:var(--amber); }
+  .opt-metric-val.bad  { color:var(--red); }
+  .opt-metric-val.good { color:var(--green); }
+  .opt-metric-lbl { font-family:"JetBrains Mono",monospace; font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); margin-top:2px; }
+
+  .opt-summary-bar { display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px; padding:14px 18px; background:var(--bg-card); border:1px solid var(--rule-soft); }
+  .opt-summary-item { text-align:center; }
+  .opt-summary-num { font-family:"Fraunces",serif; font-size:28px; font-weight:400; line-height:1; }
+  .opt-summary-lbl { font-family:"JetBrains Mono",monospace; font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin-top:3px; }
 </style>
 </head>
 <body>
@@ -3490,6 +3536,11 @@
           <span class="sl-drag" title="Drag to reorder">⋮⋮</span>
           <span class="sl-icon">◇</span>
           <span>Business Drivers</span>
+        </a>
+        <a href="#" class="sidebar-link" data-page="optimizations" draggable="true" onclick="event.preventDefault();showPage('optimizations',this)">
+          <span class="sl-drag" title="Drag to reorder">⋮⋮</span>
+          <span class="sl-icon">◉</span>
+          <span>Optimizations</span>
         </a>
         <a href="#" class="sidebar-link" data-page="uploads" draggable="true" onclick="event.preventDefault();showPage('uploads',this)">
           <span class="sl-drag" title="Drag to reorder">⋮⋮</span>
@@ -3723,6 +3774,27 @@
     </div>
   </section>
 
+
+
+  <!-- Optimizations Section -->
+  <section class="section" id="sec-optimizations">
+    <div class="section-head" onclick="this.closest('.section').classList.toggle('collapsed')">
+      <span class="num">§ OPT</span>
+      <h2>Merchant Optimizations</h2>
+      <span class="tag" id="opt-tag">Upload Ops Health &amp; Photo Coverage CSVs</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div id="opt-panel">
+        <div class="opt-empty">
+          <div class="opt-empty-icon">◈</div>
+          <h3>No optimization data yet</h3>
+          <p>Upload <strong>Sales Impact Store Detail.csv</strong> and/or <strong>Photo Coverage.csv</strong>
+          from the SMB AM Ops Dashboard in Sigma via the Uploads &amp; Library tab.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- SERVE Merchant Sentiment Scorecard -->
   <section class="section" id="sec-serve">
@@ -4086,6 +4158,13 @@ function detectFileType(headers, filename) {
   if (h.length === 1 && h[0] === 'calc') return { type: 'metadata' };
   // WoW weekly time-series file: first header is "values", contains "week"
   if (h[0] === 'values' || fname.includes('wow')) return { type: 'wowData' };
+  // Ops Health (Sales Impact Store Detail) — uptime, M&I rate, cancel rate, lost sales
+  if (h.some(c=>c.includes('mi rate')||c.includes('m&i rate')) && h.includes('account owner')) return { type: 'opsHealth' };
+  if (h.some(c=>c.includes('avoidable cancellations rate')) && h.includes('account owner')) return { type: 'opsHealth' };
+  if ((fname.includes('sales impact') || fname.includes('ops health') || fname.includes('store detail')) && fname.endsWith('.csv')) return { type: 'opsHealth' };
+  // Photo Coverage (from SMB AM Ops Dashboard)
+  if (h.includes('photo coverage') || (h.includes('number of photos') && h.includes('number of items'))) return { type: 'photoCoverage' };
+  if (fname.includes('photo') && fname.includes('coverage') && fname.endsWith('.csv')) return { type: 'photoCoverage' };
   // SERVE scorecard CSV — business ID + rep + SERVE dimension scores
   if (fname.includes('serve') && fname.endsWith('.csv')) return { type: 'serveData' };
   if (h.some(c=>c.includes('serve')) && h.some(c=>c==='s'||c.includes('s score')||c.includes('set the table'))) return { type: 'serveData' };
@@ -4916,6 +4995,32 @@ async function handleFiles(files) {
       } else if (parsed.detection.type === 'metadata') {
         chip.className = 'file-chip';
         chip.innerHTML = `<span class="f-name">${file.name}</span><span class="f-type" style="color:var(--ink-faint)">Skipped</span>`;
+      } else if (parsed.detection.type === 'opsHealth') {
+        const ops = processOpsHealth(parsed);
+        if (ops.length) {
+          state.opsHealthData = ops;
+          chip.className = 'file-chip ok';
+          chip.innerHTML = `<span class="f-name">${file.name}</span><span class="f-type">Ops Health · ${ops.length} stores</span>`;
+          uploadedCount++;
+          renderOptimizations();
+          toast('✓ Ops Health loaded · ' + ops.length + ' stores', 'ok');
+        } else {
+          chip.className = 'file-chip unknown';
+          chip.innerHTML = `<span class="f-name">${file.name}</span><span class="f-type" style="color:var(--amber)">Ops Health — check columns</span>`;
+        }
+      } else if (parsed.detection.type === 'photoCoverage') {
+        const photo = processPhotoCoverage(parsed);
+        if (photo.length) {
+          state.photoCoverageData = photo;
+          chip.className = 'file-chip ok';
+          chip.innerHTML = `<span class="f-name">${file.name}</span><span class="f-type">Photo Coverage · ${photo.length} businesses</span>`;
+          uploadedCount++;
+          renderOptimizations();
+          toast('✓ Photo Coverage loaded · ' + photo.length + ' businesses', 'ok');
+        } else {
+          chip.className = 'file-chip unknown';
+          chip.innerHTML = `<span class="f-name">${file.name}</span><span class="f-type" style="color:var(--amber)">Photo Coverage — check columns</span>`;
+        }
       } else if (parsed.detection.type === 'serveData') {
         const sd = processServeData(parsed);
         if (sd) {
@@ -5031,6 +5136,7 @@ function render() {
   if (hasDpLeads) renderDashPassLeads();
   renderWowPanel(); // always keep WoW section in sync with state
   if (typeof renderServeMerchants === 'function') { renderServeMerchants(); renderServeSummary(); }
+  if (typeof renderOptimizations === 'function' && (state.opsHealthData || state.photoCoverageData)) renderOptimizations();
   renderJumpNav();
   updateScopeMeta();
 
@@ -10720,13 +10826,14 @@ const PAGE_MAP = {
   engagement: { sections: ['sec-mxeng'], tableau: null,                                                     title: 'GOV <em>Engagement</em>',                  eyebrow: 'IAM · QSR Team' },
   levers:     { sections: ['sec-levers','sec-pipeline-pacing'], tableau: null,                              title: 'Gaps &amp; <em>Levers</em>',               eyebrow: 'IAM · QSR Team' },
   bizdriv:    { sections: ['business-drivers'], tableau: 'tb-overview',                                      title: 'Business <em>Drivers</em>',                eyebrow: 'IAM · QSR Team' },
+  optimizations: { sections: ['sec-optimizations'], tableau: null, title: 'Merchant <em>Optimizations</em>', eyebrow: 'IAM · QSR Team' },
   uploads:    { sections: ['history-section'], tableau: null, uploadFocus: true,                            title: 'Uploads &amp; <em>Library</em>',            eyebrow: 'IAM · QSR Team' },
 };
 
 const ALL_PAGE_SECTIONS = [
   'sec-summary','sec-notes','sec-forecast','sec-levers','sec-pipeline-pacing',
   'sec-detractors','sec-soft-churn','sec-dpleads','sec-whatif','sec-mxeng',
-  'wow-summary','history-section','business-drivers','sec-serve'
+  'wow-summary','history-section','business-drivers','sec-serve','sec-optimizations'
 ];
 
 // Upload-area elements shown only on Uploads tab
@@ -10886,6 +10993,195 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ── Compact dropzone style for non-upload pages ──────────────────
+
+
+// ═══════════════════════════════════════════════════════════════
+//  OPTIMIZATIONS — Merchant Opportunity Scorecard
+// ═══════════════════════════════════════════════════════════════
+
+// Thresholds
+const OPT_THRESHOLDS = {
+  photo:    0.70,   // < 70% photo coverage = flag
+  uptime:   0.95,   // < 95% uptime = flag
+  mi:       0.05,   // > 5% M&I rate = flag
+  cancel:   0.03,   // > 3% avoidable cancel rate = flag
+  rating:   4.3,    // < 4.3 avg rating = flag
+  lostSales:500,    // > $500 lost sales = flag
+};
+
+function processOpsHealth(parsed) {
+  const rows = parsed.data || [];
+  const get = (row, ...names) => { for (const n of names) { const v = row[n]; if (v !== undefined && v !== null && v !== '') return v; } return null; };
+  const toF = v => { const n = parseFloat((v||'').toString().replace('%','')); return isNaN(n) ? null : n; };
+
+  return rows.map(row => {
+    const bizName = get(row,'Business Name','BUSINESS NAME','Business_Name') || '';
+    const storeId = get(row,'Store ID','Store Id','STORE ID','store_id');
+    const ao = get(row,'Account Owner','ACCOUNT OWNER','account_owner') || '';
+    const subteam = get(row,'Subteam','SUBTEAM','Sub Team') || '';
+    if (!bizName && !storeId) return null;
+
+    let uptime = toF(get(row,'Uptime %','Uptime','UPTIME','% Uptime','uptime_pct'));
+    if (uptime !== null && uptime > 1) uptime = uptime / 100; // normalize if in %
+    const miRate = toF(get(row,'MI Rate','M&I Rate','mi_rate','MI_RATE','M&I rate'));
+    const miRateN = (miRate !== null && miRate > 1) ? miRate/100 : miRate;
+    const cancelRate = toF(get(row,'Cancel Rate','Avoidable Cancellations Rate','AVOIDABLE_CANCELLATIONS_RATE','cancel_rate'));
+    const cancelRateN = (cancelRate !== null && cancelRate > 1) ? cancelRate/100 : cancelRate;
+    const lostSales = toF(get(row,'Total Lost Sales','Lost Sales','total_lost_sales'));
+    const rating = toF(get(row,'Avg Rating','Average Rating','avg_rating','AVERAGE_RATING'));
+
+    return { bizName, storeId, ao, subteam, uptime, miRate: miRateN, cancelRate: cancelRateN, lostSales, rating, _src: 'ops' };
+  }).filter(Boolean);
+}
+
+function processPhotoCoverage(parsed) {
+  const rows = parsed.data || [];
+  const get = (row,...names) => { for (const n of names) { const v=row[n]; if(v!==undefined&&v!==null&&v!=='') return v; } return null; };
+  const toF = v => { const n=parseFloat((v||'').toString().replace('%','')); return isNaN(n)?null:n; };
+
+  // Aggregate to business level (average across stores)
+  const byBiz = {};
+  rows.forEach(row => {
+    const biz = (get(row,'Business Name','business_name','BUSINESS NAME')||'').trim();
+    if (!biz) return;
+    let cov = toF(get(row,'Photo Coverage','photo_coverage','PHOTO_COVERAGE','% Photo Coverage'));
+    if (cov !== null && cov > 1) cov = cov / 100;
+    if (cov === null) return;
+    if (!byBiz[biz]) byBiz[biz] = { total: 0, count: 0 };
+    byBiz[biz].total += cov;
+    byBiz[biz].count++;
+  });
+  return Object.entries(byBiz).map(([bizName, d]) => ({ bizName, photoCoverage: d.total / d.count, _src: 'photo' }));
+}
+
+function mergeOptData(opsRows, photoRows) {
+  // Build photo lookup by business name (fuzzy)
+  const photoLookup = {};
+  (photoRows||[]).forEach(p => { photoLookup[p.bizName.toLowerCase().trim()] = p.photoCoverage; });
+
+  const merged = (opsRows||[]).map(r => {
+    const photo = photoLookup[r.bizName.toLowerCase().trim()] ?? null;
+    const flags = [];
+    if (photo !== null && photo < OPT_THRESHOLDS.photo) flags.push({ type:'photo', label:`📸 Photo ${(photo*100).toFixed(0)}%` });
+    if (r.uptime !== null && r.uptime < OPT_THRESHOLDS.uptime) flags.push({ type:'down', label:`⚡ Uptime ${(r.uptime*100).toFixed(1)}%` });
+    if (r.miRate !== null && r.miRate > OPT_THRESHOLDS.mi) flags.push({ type:'mi', label:`📋 M&I ${(r.miRate*100).toFixed(1)}%` });
+    if (r.cancelRate !== null && r.cancelRate > OPT_THRESHOLDS.cancel) flags.push({ type:'cancel', label:`❌ Cancels ${(r.cancelRate*100).toFixed(1)}%` });
+    if (r.rating !== null && r.rating < OPT_THRESHOLDS.rating) flags.push({ type:'rating', label:`⭐ Rating ${r.rating.toFixed(1)}` });
+    if (r.lostSales !== null && r.lostSales > OPT_THRESHOLDS.lostSales) flags.push({ type:'revenue', label:`💰 $${Math.round(r.lostSales).toLocaleString()} lost` });
+    return { ...r, photoCoverage: photo, flags, score: flags.length };
+  });
+
+  // If only photo data, add those merchants not in ops
+  if (!opsRows || !opsRows.length) {
+    return (photoRows||[]).map(p => {
+      const flags = p.photoCoverage < OPT_THRESHOLDS.photo ? [{ type:'photo', label:`📸 Photo ${(p.photoCoverage*100).toFixed(0)}%` }] : [];
+      return { bizName:p.bizName, ao:'', subteam:'', photoCoverage:p.photoCoverage, flags, score:flags.length };
+    });
+  }
+  return merged;
+}
+
+function renderOptimizations() {
+  const panel = document.getElementById('opt-panel');
+  const tag   = document.getElementById('opt-tag');
+  if (!panel) return;
+
+  const opsData   = state.opsHealthData   || [];
+  const photoData = state.photoCoverageData || [];
+
+  if (!opsData.length && !photoData.length) {
+    panel.innerHTML = '<div class="opt-empty"><div class="opt-empty-icon">◈</div><h3>No optimization data yet</h3><p>Upload <strong>Sales Impact Store Detail.csv</strong> and/or <strong>Photo Coverage.csv</strong> from the SMB AM Ops Dashboard via the Uploads &amp; Library tab.</p></div>';
+    if (tag) tag.textContent = 'Upload Ops Health & Photo Coverage CSVs';
+    return;
+  }
+
+  const merchants = mergeOptData(opsData, photoData)
+    .filter(m => !isHardExcluded(m.ao))
+    .sort((a,b) => b.score - a.score);
+
+  if (tag) tag.textContent = `${merchants.length} merchants · ${merchants.filter(m=>m.score>0).length} with opportunities`;
+
+  // Summary bar
+  const photoGap = merchants.filter(m => m.photoCoverage !== null && m.photoCoverage < OPT_THRESHOLDS.photo).length;
+  const downtime = merchants.filter(m => m.uptime !== null && m.uptime < OPT_THRESHOLDS.uptime).length;
+  const miIssue  = merchants.filter(m => m.miRate !== null && m.miRate > OPT_THRESHOLDS.mi).length;
+  const withOpp  = merchants.filter(m => m.score > 0).length;
+
+  const aos = ['All', ...new Set(merchants.map(m=>m.ao).filter(Boolean))].sort();
+  const subtms = ['All', ...new Set(merchants.map(m=>m.subteam).filter(Boolean))].sort();
+  const oppTypes = ['All Opportunities','Photo Gap','Downtime','High M&I','High Cancels','Low Rating','Lost Sales'];
+
+  const summaryHtml = `<div class="opt-summary-bar">
+    <div class="opt-summary-item"><div class="opt-summary-num">${merchants.length}</div><div class="opt-summary-lbl">Total Merchants</div></div>
+    <div class="opt-summary-item"><div class="opt-summary-num" style="color:var(--accent)">${withOpp}</div><div class="opt-summary-lbl">With Opportunities</div></div>
+    ${photoGap?`<div class="opt-summary-item"><div class="opt-summary-num" style="color:var(--navy)">${photoGap}</div><div class="opt-summary-lbl">Photo Gap</div></div>`:''}
+    ${downtime?`<div class="opt-summary-item"><div class="opt-summary-num" style="color:var(--red)">${downtime}</div><div class="opt-summary-lbl">Downtime Issue</div></div>`:''}
+    ${miIssue?`<div class="opt-summary-item"><div class="opt-summary-num" style="color:var(--amber)">${miIssue}</div><div class="opt-summary-lbl">High M&I</div></div>`:''}
+  </div>`;
+
+  const filterHtml = `<div class="opt-controls">
+    <select id="opt-ao-filter" onchange="filterOptCards()">
+      ${aos.map(a=>`<option>${a}</option>`).join('')}
+    </select>
+    <select id="opt-sub-filter" onchange="filterOptCards()">
+      ${subtms.map(s=>`<option>${s}</option>`).join('')}
+    </select>
+    <select id="opt-opp-filter" onchange="filterOptCards()">
+      ${oppTypes.map(o=>`<option>${o}</option>`).join('')}
+    </select>
+    <span class="opt-count" id="opt-card-count">${merchants.length} merchants</span>
+  </div>`;
+
+  const cards = merchants.map(m => {
+    const uptimeCls = m.uptime === null ? '' : m.uptime < 0.93 ? 'bad' : m.uptime < 0.95 ? 'warn' : 'good';
+    const miCls = m.miRate === null ? '' : m.miRate > 0.07 ? 'bad' : m.miRate > 0.05 ? 'warn' : 'good';
+    const photoCls = m.photoCoverage === null ? '' : m.photoCoverage < 0.5 ? 'bad' : m.photoCoverage < 0.7 ? 'warn' : 'good';
+    const flagHtml = m.flags.map(f => `<span class="opt-flag ${f.type}">${f.label}</span>`).join('');
+    const metHtml = `<div class="opt-metrics">
+      <div class="opt-metric"><div class="opt-metric-val ${uptimeCls}">${m.uptime!==null?(m.uptime*100).toFixed(1)+'%':'—'}</div><div class="opt-metric-lbl">Uptime</div></div>
+      <div class="opt-metric"><div class="opt-metric-val ${miCls}">${m.miRate!==null?(m.miRate*100).toFixed(1)+'%':'—'}</div><div class="opt-metric-lbl">M&I Rate</div></div>
+      <div class="opt-metric"><div class="opt-metric-val ${photoCls}">${m.photoCoverage!==null?(m.photoCoverage*100).toFixed(0)+'%':'—'}</div><div class="opt-metric-lbl">Photos</div></div>
+    </div>`;
+    const scoreLabel = m.score === 0 ? 'Optimized' : m.score === 1 ? '1 opp' : `${m.score} opps`;
+    return `<div class="opt-card score-${m.score}" data-ao="${m.ao}" data-sub="${m.subteam}" data-flags="${m.flags.map(f=>f.type).join(',')}">
+      <div class="opt-card-top">
+        <div>
+          <div class="opt-biz-name">${m.bizName}</div>
+          <div class="opt-biz-meta">${[m.storeId?'#'+m.storeId:'', m.ao, m.subteam].filter(Boolean).join(' · ')}</div>
+        </div>
+        <div class="opt-score-badge s${m.score}" title="${scoreLabel}">${m.score}</div>
+      </div>
+      ${m.flags.length ? `<div class="opt-flags">${flagHtml}</div>` : '<div style="font-size:11px;color:var(--green);margin-top:6px;">✓ No open opportunities</div>'}
+      ${metHtml}
+    </div>`;
+  }).join('');
+
+  panel.innerHTML = summaryHtml + filterHtml + `<div class="opt-grid" id="opt-card-grid">${cards}</div>`;
+
+  // Mark section as visible if on optimizations page
+  const sec = document.getElementById('sec-optimizations');
+  if (sec && currentPage === 'optimizations') { sec.classList.add('visible'); sec.classList.remove('collapsed'); sec.style.display = 'block'; }
+}
+
+function filterOptCards() {
+  const ao   = (document.getElementById('opt-ao-filter')  ||{}).value || 'All';
+  const sub  = (document.getElementById('opt-sub-filter') ||{}).value || 'All';
+  const opp  = (document.getElementById('opt-opp-filter') ||{}).value || 'All Opportunities';
+  const grid = document.getElementById('opt-card-grid');
+  const cnt  = document.getElementById('opt-card-count');
+  if (!grid) return;
+  const OPP_MAP = {'Photo Gap':'photo','Downtime':'down','High M&I':'mi','High Cancels':'cancel','Low Rating':'rating','Lost Sales':'revenue'};
+  let visible = 0;
+  grid.querySelectorAll('.opt-card').forEach(card => {
+    const aoOk  = ao  === 'All' || card.dataset.ao  === ao;
+    const subOk = sub === 'All' || card.dataset.sub === sub;
+    const oppOk = opp === 'All Opportunities' || (card.dataset.flags||'').includes(OPP_MAP[opp]||'');
+    const show  = aoOk && subOk && oppOk;
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+  if (cnt) cnt.textContent = visible + ' merchants';
+}
 
 
 function renderRepActivity() {
