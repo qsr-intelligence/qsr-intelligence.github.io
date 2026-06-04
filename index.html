@@ -10903,7 +10903,7 @@ function renderServeMerchants() {
   if (tag) tag.textContent = `${sd.total} call${sd.total===1?'':'s'} scored`;
 
   const reps = ['All', ...Object.keys(sd.byRep).sort()];
-  const avgCls = avg => avg>=4.5?'avg-exc':avg>=3.5?'avg-str':avg>=2.5?'avg-sat':avg>=1.5?'avg-dev':'avg-low';
+  const avgCls = () => '';
 
   const cards = sd.calls.map(c => {
     const cls = c.avg ? avgCls(c.avg) : '';
@@ -10920,7 +10920,7 @@ function renderServeMerchants() {
           <div class="serve-biz-id">${c.businessId}${c.date?' · '+c.date:''}</div>
           <div class="serve-rep">${c.rep}</div>
         </div>
-        ${c.avg!==null?`<div class="serve-avg-badge serve-score-label-${Math.round(c.avg)}">${c.avg}</div>`:''}
+
       </div>
       <div class="serve-dims">${dims}</div>
       ${notesHtml}
