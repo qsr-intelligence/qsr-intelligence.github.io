@@ -3364,6 +3364,11 @@
           <span class="sl-icon">◎</span>
           <span>Engagement</span>
         </a>
+        <a href="#" class="sidebar-link" data-page="levers" draggable="true" onclick="event.preventDefault();showPage('levers',this)">
+          <span class="sl-drag" title="Drag to reorder">⋮⋮</span>
+          <span class="sl-icon">⇑</span>
+          <span>Levers</span>
+        </a>
         <a href="#" class="sidebar-link" data-page="bizdriv" draggable="true" onclick="event.preventDefault();showPage('bizdriv',this)">
           <span class="sl-drag" title="Drag to reorder">⋮⋮</span>
           <span class="sl-icon">◇</span>
@@ -10482,6 +10487,7 @@ const PAGE_MAP = {
   loyalty:    { sections: ['business-drivers'], tableau: 'tb-loyalty', loyaltyOnly: true,                  title: 'Loyalty <em>Campaigns</em>',               eyebrow: 'IAM · QSR Team' },
   merchant:   { sections: ['sec-detractors','sec-soft-churn','sec-pipeline-pacing'], tableau: null,         title: 'Merchant <em>Insights</em>',               eyebrow: 'IAM · QSR Team' },
   engagement: { sections: ['sec-mxeng'], tableau: null,                                                     title: 'GOV <em>Engagement</em>',                  eyebrow: 'IAM · QSR Team' },
+  levers:     { sections: ['sec-levers','sec-pipeline-pacing'], tableau: null,                              title: 'Gaps &amp; <em>Levers</em>',               eyebrow: 'IAM · QSR Team' },
   bizdriv:    { sections: ['business-drivers'], tableau: 'tb-loyalty',                                      title: 'Business <em>Drivers</em>',                eyebrow: 'IAM · QSR Team' },
   uploads:    { sections: ['history-section'], tableau: null, uploadFocus: true,                            title: 'Uploads &amp; <em>Library</em>',            eyebrow: 'IAM · QSR Team' },
 };
