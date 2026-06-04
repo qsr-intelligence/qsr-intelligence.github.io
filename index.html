@@ -3422,6 +3422,21 @@
   .loy-tip-num { font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 700; color: var(--accent); flex-shrink: 0; }
   .loy-tip-text { font-size: 11px; color: var(--ink-soft); line-height: 1.5; }
   .loy-tip-text strong { color: var(--ink); }
+
+  /* ── Rep Activity Table ─────────────────────────────────────────────────── */
+  .activity-section { margin-top: 32px; }
+  .activity-header { display:flex; align-items:baseline; gap:12px; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--rule-soft); }
+  .activity-header-title { font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-faint); }
+  .activity-header-sub { font-family:"JetBrains Mono",monospace; font-size:10px; color:var(--ink-faint); margin-left:auto; }
+  .activity-table { width:100%; border-collapse:collapse; font-size:12px; }
+  .activity-table th { font-family:"JetBrains Mono",monospace; font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); padding:7px 10px; text-align:left; border-bottom:2px solid var(--rule); white-space:nowrap; }
+  .activity-table th.num { text-align:right; }
+  .activity-table td { padding:7px 10px; border-bottom:1px solid var(--rule-soft); vertical-align:middle; }
+  .activity-table td.num { text-align:right; font-family:"JetBrains Mono",monospace; font-size:11px; }
+  .activity-table tr:hover td { background:var(--bg-elevated); }
+  .activity-table .subteam-row td { background:var(--bg-elevated); font-family:"JetBrains Mono",monospace; font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); padding:5px 10px; }
+  .activity-bar { display:inline-block; height:4px; background:var(--accent); opacity:.7; border-radius:2px; margin-right:6px; vertical-align:middle; }
+  .activity-zero { color:var(--ink-faint); }
 </style>
 </head>
 <body>
@@ -10739,6 +10754,7 @@ function showPage(page, linkEl) {
   const dz = document.getElementById('dropzone');
   if (dz) dz.style.display = cfg.uploadFocus ? '' : 'none';
 
+  if (page === 'engagement' && typeof renderRepActivity === 'function') { setTimeout(renderRepActivity, 100); }
   // sec-mxeng: force visible on engagement tab so it shows even before render() runs
   const mxengSection = document.getElementById('sec-mxeng');
   if (mxengSection) {
@@ -12049,6 +12065,10 @@ async function fetchLiveData() {
       state.govEngagement = d.govEngagement;
       updated = true;
     }
+    if (d.repActivity && d.repActivity.length) {
+      window._repActivityData = d.repActivity;
+      updated = true;
+    }
     if (d.forecastHistory && d.forecastHistory.length) {
       state.forecastHistory = d.forecastHistory;
       updated = true;
@@ -12062,6 +12082,9 @@ async function fetchLiveData() {
         const mxEl = document.getElementById('sec-mxeng');
         if (mxEl) { mxEl.classList.add('visible'); mxEl.style.display = 'block'; }
         if (typeof renderMxEngagement === 'function') renderMxEngagement();
+        if (typeof renderRepActivity === 'function') renderRepActivity();
+      } else if (d.repActivity && currentPage === 'engagement') {
+        if (typeof renderRepActivity === 'function') renderRepActivity();
       }
       const updatedAt = d.updatedAt ? ' · ' + d.updatedAt.slice(0,10) : '';
       toast('✓ Live data loaded from Sigma' + updatedAt, 'ok');
