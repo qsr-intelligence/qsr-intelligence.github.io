@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merchant Simulation Tools</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f5f5f3;
+      color: #1a1a18;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container { max-width: 780px; margin: 0 auto; }
+
+    header { margin-bottom: 1.75rem; }
+    header h1 { font-size: 22px; font-weight: 500; margin-bottom: 4px; }
+    header p { font-size: 14px; color: #666663; }
+
+    .tab-nav {
+      display: flex;
+      gap: 4px;
+      background: #e8e8e6;
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 1.5rem;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 7px;
+      font-size: 14px;
+      font-family: inherit;
+      font-weight: 400;
+      color: #666663;
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .tab-btn.active {
+      background: #ffffff;
+      color: #1a1a18;
+      font-weight: 500;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .card {
+      background: #ffffff;
+      border: 0.5px solid rgba(0,0,0,0.12);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .sec-hdr {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #999997;
+      margin-bottom: 1rem;
+    }
+
+    .inp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .inp-label { font-size: 12px; color: #666663; margin-bottom: 5px; }
+
+    .inp-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #f5f5f3;
+      border: 0.5px solid rgba(0,0,0,0.15);
+      border-radius: 8px;
+      padding: 0 10px;
+    }
+
+    .inp-sym { font-size: 13px; color: #999997; }
+
+    .inp-wrap input[type="number"] {
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-family: inherit;
+      color: #1a1a18;
+      padding: 8px 0;
+      width: 100%;
+      outline: none;
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button { opacity: 0.4; }
+
+    .sl-row { margin-top: 1rem; }
+
+    .sl-hdr {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .sl-name { font-size: 13px; color: #444441; }
+
+    .sl-val {
+      font-size: 13px;
+      font-weight: 500;
+      background: #f0f0ee;
+      border-radius: 6px;
+      padding: 2px 8px;
+      min-width: 52px;
+      text-align: center;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 4px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: #e0e0de;
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #1a1a18;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.2);
+      cursor: pointer;
+    }
+
+
+    /* Metrics */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .metric {
+      background: #f5f5f3;
+      border-radius: 8px;
+      padding: 0.875rem 1rem;
+    }
+
+    .metric-label { font-size: 12px; color: #666663; margin-bottom: 5px; }
+    .metric-value { font-size: 22px; font-weight: 500; line-height: 1.2; }
+
+    /* Breakdown */
+    .brow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 0;
+      border-bottom: 0.5px solid rgba(0,0,0,0.08);
+      font-size: 13px;
+    }
+
+    .brow:last-of-type { border-bottom: none; }
+    .brow-label { color: #666663; }
+    .brow-cols { display: flex; gap: 1.5rem; }
+    .col-cur { min-width: 90px; text-align: right; color: #444441; }
+    .col-sim { min-width: 90px; text-align: right; font-weight: 500; color: #185FA5; }
+    .brow-header .col-cur { font-size: 12px; font-weight: 500; }
+    .brow-header .col-sim { font-size: 12px; }
+    .brow-total { font-weight: 500; }
+
+    .note {
+      font-size: 12px;
+      color: #999997;
+      margin-top: 0.75rem;
+      line-height: 1.6;
+      padding-top: 0.75rem;
+      border-top: 0.5px solid rgba(0,0,0,0.08);
+    }
+
+    .def {
+      font-size: 11px;
+      color: #999997;
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+
+    .metric-def {
+      font-size: 11px;
+      color: #888886;
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    /* Visibility score tab */
+    .metric-sl-row {
+      padding: 0.875rem 0;
+      border-bottom: 0.5px solid rgba(0,0,0,0.07);
+    }
+    .metric-sl-row:last-child { border-bottom: none; }
+
+    .metric-sl-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+      gap: 12px;
+    }
+
+    .metric-badge {
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      background: #f0f0ee;
+      border-radius: 6px;
+      padding: 3px 10px;
+      min-width: 60px;
+      text-align: center;
+    }
+
+    .metric-sl-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+      gap: 12px;
+    }
+
+    .metric-target {
+      font-size: 11px;
+      color: #999997;
+      white-space: nowrap;
+    }
+
+    .contrib-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .contrib-track {
+      flex: 1;
+      height: 5px;
+      background: #e8e8e6;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .contrib-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.25s ease, background 0.25s ease;
+    }
+
+    .contrib-val {
+      font-size: 12px;
+      font-weight: 500;
+      min-width: 36px;
+      text-align: right;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+
+    .score-total {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f5f5f3;
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .score-label { font-size: 13px; color: #444441; }
+    .score-sublabel { font-size: 11px; color: #999997; margin-top: 2px; }
+    .score-num { font-size: 36px; font-weight: 500; }
+
+    .breakdown-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 0;
+      font-size: 12px;
+    }
+
+    .breakdown-name { width: 130px; color: #666663; flex-shrink: 0; }
+    .breakdown-track { flex: 1; height: 8px; background: #e8e8e6; border-radius: 4px; overflow: hidden; }
+    .breakdown-fill { height: 100%; border-radius: 4px; }
+    .breakdown-val { width: 36px; text-align: right; font-weight: 500; color: #444441; }
+
+    .apply-btn {
+      width: 100%;
+      padding: 12px;
+      background: #1a1a18;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .apply-btn:hover { background: #333330; }
+    .apply-btn:active { transform: scale(0.99); }
+    .apply-btn.applied { background: #3B6D11; }
+
+    /* Callout */
+    .callout {
+      background: #EBF4FF;
+      border: 0.5px solid #B5D4F4;
+      border-radius: 8px;
+      padding: 0.875rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .callout-label { font-size: 13px; color: #185FA5; }
+    .callout-value { font-size: 20px; font-weight: 500; color: #185FA5; }
+
+    /* Chart */
+    .legend {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 0.75rem;
+      font-size: 12px;
+      color: #666663;
+    }
+
+    .legend span { display: flex; align-items: center; gap: 5px; }
+
+    .legend-dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+    .chart-wrap { position: relative; height: 180px; width: 100%; }
+
+    @media (max-width: 520px) {
+      .inp-grid { grid-template-columns: 1fr; }
+      .metrics-grid { grid-template-columns: 1fr 1fr; }
+      .metrics-grid .metric:last-child { grid-column: span 2; }
+      .metric-value { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Merchant Revenue Simulator</h1>
+    <p>Estimate the revenue impact of menu price optimization and DashPass enrollment.</p>
+    <p style="font-size:11px;color:#999997;margin-top:6px;line-height:1.5;">&#9432;&nbsp; For illustrative purposes only. All outputs are simulated estimates based on aggregate platform data — not a guarantee of results.</p>
+  </header>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="showTab('visibility', this)">Start Here</button>
+    <button class="tab-btn" onclick="showTab('inflation', this)">Menu Price Inflation</button>
+    <button class="tab-btn" onclick="showTab('dashpass', this)">DashPass Enrollment Lift</button>
+  </div>
+
+
+  <!-- ═══════════════════════════════════
+       TAB 1 · INFLATION IMPACT
+  ═══════════════════════════════════ -->
+  <div id="tab-inflation" class="tab-content">
+
+    <div class="card">
+      <p class="sec-hdr">Inputs</p>
+      <div class="inp-grid">
+        <div>
+          <p class="inp-label">L90 sales</p>
+          <div class="inp-wrap">
+            <span class="inp-sym">$</span>
+            <input type="number" id="i_l90" value="50000" min="0" step="1000" oninput="calcInflation()">
+          </div>
+          <p class="def">Total merchant revenue on DoorDash over the last 90 days.</p>
+        </div>
+        <div>
+          <p class="inp-label">Avg. order value</p>
+          <div class="inp-wrap">
+            <span class="inp-sym">$</span>
+            <input type="number" id="i_aov" value="35" min="1" step="1" oninput="calcInflation()">
+          </div>
+          <p class="def">Average dollar amount per customer order, used to estimate order count.</p>
+        </div>
+      </div>
+
+      <div class="sl-row">
+        <div class="sl-hdr">
+          <span class="sl-name">Current menu price inflation</span>
+          <span class="sl-val" id="i_o_cur">12%</span>
+        </div>
+        <input type="range" id="i_cur_inf" min="0" max="40" step="1" value="12"
+          oninput="document.getElementById('i_o_cur').textContent=parseInt(this.value)+'%'; calcInflation()">
+        <p class="def">How much the merchant has raised menu prices above the baseline, expressed as a percentage. Higher inflation typically suppresses order volume.</p>
+      </div>
+
+      <div class="sl-row">
+        <div class="sl-hdr">
+          <span class="sl-name">Target (reduced) inflation</span>
+          <span class="sl-val" id="i_o_tgt">5%</span>
+        </div>
+        <input type="range" id="i_tgt_inf" min="0" max="40" step="1" value="5"
+          oninput="document.getElementById('i_o_tgt').textContent=parseInt(this.value)+'%'; calcInflation()">
+        <p class="def">The proposed lower inflation rate the merchant would move to. Reduces average order value but unlocks a visibility boost.</p>
+      </div>
+
+      <div class="sl-row">
+        <div class="sl-hdr">
+          <span class="sl-name">Visibility boost</span>
+          <span class="sl-val" id="i_o_boost">15%</span>
+        </div>
+        <input type="range" id="i_boost" min="10" max="40" step="1" value="15"
+          oninput="document.getElementById('i_o_boost').textContent=parseInt(this.value)+'%'; calcInflation()">
+        <p class="def">Estimated increase in order volume from improved placement and discoverability when a merchant reduces menu price inflation. Range: 10–40%.</p>
+        <p style="font-size:12px;color:#185FA5;background:#EBF4FF;border:0.5px solid #B5D4F4;border-radius:6px;padding:7px 10px;margin-top:8px;">
+          <strong style="font-weight:500;">Benchmark:</strong> Merchants with optimal metrics (strong ratings, low cancellation rate, fast acceptance) typically see a visibility boost of <strong style="font-weight:500;">25–30%</strong>.
+        </p>
+      </div>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric">
+        <p class="metric-label">Current L90 revenue</p>
+        <p class="metric-value" id="i_m_cur">—</p>
+        <p class="metric-def">Actual revenue over the past 90 days at the current inflation rate.</p>
+      </div>
+      <div class="metric">
+        <p class="metric-label">Simulated L90 revenue</p>
+        <p class="metric-value" id="i_m_sim" style="color:#185FA5;">—</p>
+        <p class="metric-def">Projected revenue if the merchant had operated at the target inflation rate with the visibility boost applied.</p>
+      </div>
+      <div class="metric">
+        <p class="metric-label">Revenue difference</p>
+        <p class="metric-value" id="i_m_diff">—</p>
+        <p class="metric-def">Net change in L90 revenue — the gain from more orders minus the loss from lower prices per order.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="sec-hdr">Breakdown</p>
+      <div class="brow brow-header">
+        <span class="brow-label"></span>
+        <div class="brow-cols">
+          <span class="col-cur">Current</span>
+          <span class="col-sim">Simulated</span>
+        </div>
+      </div>
+      <div class="brow">
+        <span class="brow-label">Order count</span>
+        <div class="brow-cols">
+          <span class="col-cur" id="i_b_ord_cur">—</span>
+          <span class="col-sim" id="i_b_ord_sim">—</span>
+        </div>
+      </div>
+      <div class="brow">
+        <span class="brow-label">Avg. order value</span>
+        <div class="brow-cols">
+          <span class="col-cur" id="i_b_aov_cur">—</span>
+          <span class="col-sim" id="i_b_aov_sim">—</span>
+        </div>
+      </div>
+      <div class="brow brow-total">
+        <span>Total revenue</span>
+        <div class="brow-cols">
+          <span class="col-cur" id="i_b_rev_cur">—</span>
+          <span class="col-sim" id="i_b_rev_sim">—</span>
+        </div>
+      </div>
+      <p class="note" id="i_note"></p>
+    </div>
+
+  </div><!-- /tab-inflation -->
+
+
+  <!-- ═══════════════════════════════════
+       TAB 2 · DASHPASS LIFT
+  ═══════════════════════════════════ -->
+  <div id="tab-dashpass" class="tab-content">
+
+    <div class="card">
+      <p class="sec-hdr">Inputs</p>
+
+      <div class="inp-grid" style="margin-bottom:1rem;">
+        <div>
+          <p class="inp-label">L90 sales</p>
+          <div class="inp-wrap">
+            <span class="inp-sym">$</span>
+            <input type="number" id="d_l90" value="50000" min="0" step="1000" oninput="calcDashpass()">
+          </div>
+          <p class="def">Total merchant revenue on DoorDash over the last 90 days.</p>
+        </div>
+        <div>
+          <p class="inp-label">Avg. order value</p>
+          <div class="inp-wrap">
+            <span class="inp-sym">$</span>
+            <input type="number" id="d_aov" value="35" min="1" step="1" oninput="calcDashpass()">
+          </div>
+          <p class="def">Average dollar amount per customer order, used to estimate current order count.</p>
+        </div>
+      </div>
+
+      <div class="sl-row" style="margin-top:0.25rem;">
+        <div class="sl-hdr">
+          <span class="sl-name">Estimated DashPass order lift</span>
+          <span class="sl-val" id="d_o_lift">30%</span>
+        </div>
+        <input type="range" id="d_lift" min="20" max="40" step="1" value="30"
+          oninput="document.getElementById('d_o_lift').textContent=parseInt(this.value)+'%'; calcDashpass()">
+        <p class="def" style="margin-top:6px;">Estimated increase in order volume from DashPass enrollment. DashPass merchants typically see <strong style="font-weight:500;">20–40% more orders</strong>. Use the <strong style="font-weight:500;">Start Here</strong> tab to estimate where this merchant falls in that range based on their operational metrics.</p>
+      </div>
+
+      <!-- Marketplace Classic -->
+      <div style="margin-top:1.25rem;padding-top:1rem;border-top:0.5px solid rgba(0,0,0,0.08);">
+        <p class="sec-hdr" style="margin-bottom:0.5rem;">Marketplace Classic</p>
+
+        <div class="sl-row">
+          <div class="sl-hdr">
+            <span class="sl-name">Current commission rate</span>
+            <span class="sl-val" id="d_o_mc_cur">30%</span>
+          </div>
+          <input type="range" id="d_mc_cur" min="0" max="30" step="1" value="30"
+            oninput="document.getElementById('d_o_mc_cur').textContent=parseInt(this.value)+'%'; calcDashpass()">
+          <p class="def" style="margin-top:6px;">The commission rate the merchant currently pays on Marketplace Classic orders.</p>
+        </div>
+
+        <div class="sl-row">
+          <div class="sl-hdr">
+            <span class="sl-name">Proposed commission rate</span>
+            <span class="sl-val" id="d_o_mc_new">27%</span>
+          </div>
+          <input type="range" id="d_mc_new" min="0" max="30" step="1" value="27"
+            oninput="document.getElementById('d_o_mc_new').textContent=parseInt(this.value)+'%'; calcDashpass()">
+          <p class="def" style="margin-top:6px;">The proposed commission rate on Marketplace Classic orders going forward.</p>
+        </div>
+      </div>
+
+      <!-- DashPass -->
+      <div style="margin-top:1.25rem;padding-top:1rem;border-top:0.5px solid rgba(0,0,0,0.08);">
+        <p class="sec-hdr" style="margin-bottom:0.5rem;">DashPass</p>
+
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#444441;margin-bottom:0.75rem;cursor:pointer;">
+          <input type="checkbox" id="d_not_enrolled" onchange="toggleDashpassEnrolled(); calcDashpass();" style="width:15px;height:15px;cursor:pointer;">
+          Not currently enrolled in DashPass
+        </label>
+
+        <div id="d_dp_enrollment_note" style="display:none;background:#EBF4FF;border:0.5px solid #B5D4F4;border-radius:8px;padding:10px 12px;margin-bottom:0.875rem;">
+          <p style="font-size:12px;color:#185FA5;line-height:1.65;"><strong style="font-weight:500;">Simulating DashPass enrollment</strong> — this merchant's current orders are all Marketplace Classic. The simulation shows the additional revenue and order lift they could expect by joining DashPass at the rate below. Use this to make the case for enrolling.</p>
+        </div>
+
+        <div id="d_dp_cur_row" class="sl-row">
+          <div class="sl-hdr">
+            <span class="sl-name">Current commission rate</span>
+            <span class="sl-val" id="d_o_dp_cur">27%</span>
+          </div>
+          <input type="range" id="d_dp_cur" min="0" max="30" step="1" value="27"
+            oninput="document.getElementById('d_o_dp_cur').textContent=parseInt(this.value)+'%'; calcDashpass()">
+          <p class="def" style="margin-top:6px;">The commission rate the merchant currently pays on DashPass orders.</p>
+        </div>
+
+        <div class="sl-row">
+          <div class="sl-hdr">
+            <span class="sl-name" id="d_dp_new_label">Proposed commission rate</span>
+            <span class="sl-val" id="d_o_dp_new">25%</span>
+          </div>
+          <input type="range" id="d_dp_new" min="0" max="30" step="1" value="25"
+            oninput="document.getElementById('d_o_dp_new').textContent=parseInt(this.value)+'%'; calcDashpass()">
+          <p class="def" id="d_dp_new_def" style="margin-top:6px;">The proposed commission rate on DashPass orders with enrollment.</p>
+        </div>
+      </div>
+
+      <!-- Marketplace Pickup -->
+      <div style="margin-top:1.25rem;padding-top:1rem;border-top:0.5px solid rgba(0,0,0,0.08);">
+        <p class="sec-hdr" style="margin-bottom:0.5rem;">Marketplace Pickup</p>
+
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#444441;margin-bottom:0.75rem;cursor:pointer;">
+          <input type="checkbox" id="d_not_enrolled_pu" onchange="togglePickupEnrolled(); calcDashpass();" style="width:15px;height:15px;cursor:pointer;">
+          Not currently offering Marketplace Pickup
+        </label>
+
+        <div id="d_pu_l90_row" style="margin-bottom:0.75rem;">
+          <p class="inp-label" style="margin-bottom:4px;">Pickup L90 revenue</p>
+          <div class="inp-wrap">
+            <span class="inp-sym">$</span>
+            <input type="number" id="d_pu_l90" value="5000" min="0" step="500" oninput="calcDashpass()">
+          </div>
+          <p class="def" style="margin-top:3px;">Pickup revenue included in the L90 total above. Used to calculate commission impact from the rate change.</p>
+        </div>
+
+        <div id="d_pu_cur_row" class="sl-row">
+          <div class="sl-hdr">
+            <span class="sl-name">Current commission rate</span>
+            <span class="sl-val" id="d_o_pu_cur">10%</span>
+          </div>
+          <input type="range" id="d_pu_cur" min="0" max="15" step="1" value="10"
+            oninput="document.getElementById('d_o_pu_cur').textContent=parseInt(this.value)+'%'; calcDashpass()">
+          <p class="def" style="margin-top:6px;">The commission rate currently paid on Marketplace Pickup orders.</p>
+        </div>
+
+        <div class="sl-row">
+          <div class="sl-hdr">
+            <span class="sl-name">Proposed commission rate</span>
+            <span class="sl-val" id="d_o_pu_new">8%</span>
+          </div>
+          <input type="range" id="d_pu_new" min="0" max="15" step="1" value="8"
+            oninput="document.getElementById('d_o_pu_new').textContent=parseInt(this.value)+'%'; calcDashpass()">
+          <p class="def" style="margin-top:6px;">The proposed commission rate on Marketplace Pickup orders.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div>
+        <span class="callout-label" style="display:block;font-weight:500;">Projected annualized net revenue lift</span>
+        <span style="font-size:11px;color:#378ADD;">L90 net lift × 365 ÷ 90 — reflects commission change and order volume increase.</span>
+      </div>
+      <span class="callout-value" id="d_annual">—</span>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric">
+        <p class="metric-label">Current L90 net revenue</p>
+        <p class="metric-value" id="d_m_cur">—</p>
+        <p class="metric-def">Merchant's take-home after current commission, over the past 90 days.</p>
+      </div>
+      <div class="metric">
+        <p class="metric-label">L90 net with DashPass</p>
+        <p class="metric-value" id="d_m_sim" style="color:#185FA5;">—</p>
+        <p class="metric-def">Projected net revenue after proposed commission, with DashPass order lift applied.</p>
+      </div>
+      <div class="metric">
+        <p class="metric-label">Take-home pay lift (L90)</p>
+        <p class="metric-value" id="d_m_diff">—</p>
+        <p class="metric-def">Additional net earnings over 90 days after the proposed commission rate — combining the DashPass order lift and commission savings.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="sec-hdr">Breakdown</p>
+      <div class="brow brow-header">
+        <span class="brow-label"></span>
+        <div class="brow-cols">
+          <span class="col-cur">Without</span>
+          <span class="col-sim">With DashPass</span>
+        </div>
+      </div>
+      <div class="brow">
+        <span class="brow-label">Order count</span>
+        <div class="brow-cols">
+          <span class="col-cur" id="d_b_ord_cur">—</span>
+          <span class="col-sim" id="d_b_ord_sim">—</span>
+        </div>
+      </div>
+      <div class="brow">
+        <span class="brow-label">Avg. order value</span>
+        <div class="brow-cols">
+          <span class="col-cur" id="d_b_aov_cur">—</span>
+          <span class="col-sim" id="d_b_aov_sim">—</span>
+        </div>
+      </div>
+      <div class="brow">
+        <span class="brow-label">Expected lift %</span>
+        <div class="brow-cols">
+          <span class="col-cur">—</span>
+          <span class="col-sim" id="d_b_lift_pct">—</span>
+        </div>
+      </div>
+      <div class="brow brow-total">
+        <span>Gross revenue</span>
+        <div class="brow-cols">
+          <span class="col-cur" id="d_b_rev_cur">—</span>
+          <span class="col-sim" id="d_b_rev_sim">—</span>
+        </div>
+      </div>
+      <div class="brow">
+        <span class="brow-label">Classic commission</span>
+        <div class="brow-cols">
+          <span class="col-cur" id="d_b_comm_mc">—</span>
+          <span class="col-sim" id="d_b_comm_mc_new">—</span>
+        </div>
+      </div>
+      <div class="brow">
+        <span class="brow-label">DashPass commission</span>
+        <div class="brow-cols">
+          <span class="col-cur" id="d_b_comm_dp">—</span>
+          <span class="col-sim" id="d_b_comm_dp_new">—</span>
+        </div>
+      </div>
+      <div class="brow" id="d_b_pu_row">
+        <span class="brow-label">Pickup commission</span>
+        <div class="brow-cols">
+          <span class="col-cur" id="d_b_comm_pu">—</span>
+          <span class="col-sim" id="d_b_comm_pu_new">—</span>
+        </div>
+      </div>
+      <div class="brow brow-total">
+        <span>Net revenue (after commission)</span>
+        <div class="brow-cols">
+          <span class="col-cur" id="d_b_net_cur">—</span>
+          <span class="col-sim" id="d_b_net_sim" style="color:#185FA5;">—</span>
+        </div>
+      </div>
+      <p class="note" id="d_note"></p>
+    </div>
+
+  </div><!-- /tab-dashpass -->
+
+
+  <!-- ═══════════════════════════════════
+       TAB 3 · VISIBILITY SCORE
+  ═══════════════════════════════════ -->
+  <div id="tab-visibility" class="tab-content active">
+
+    <div class="card">
+      <p class="sec-hdr">Operational metrics</p>
+      <p style="font-size:12px;color:#999997;margin-bottom:1rem;">Adjust each metric to match the merchant's current performance. Each one contributes to the estimated visibility boost, shown by the progress bar on the right.</p>
+      <div id="metrics_sliders"></div>
+    </div>
+
+    <div class="card">
+      <p class="sec-hdr">Composite visibility boost</p>
+
+      <div class="score-total">
+        <div>
+          <p class="score-label">Estimated visibility boost</p>
+          <p class="score-sublabel" id="v_score_label">Based on current metric inputs</p>
+        </div>
+        <p class="score-num" id="v_total_boost">—</p>
+      </div>
+
+      <p style="font-size:12px;font-weight:500;color:#444441;margin-bottom:0.625rem;">Contribution by metric</p>
+      <div id="v_breakdown"></div>
+
+      <button class="apply-btn" id="apply_btn" onclick="applyBoostToInflation()">
+        Apply this boost to Menu Price Inflation tab →
+      </button>
+      <button class="apply-btn" id="apply_dp_btn" onclick="applyBoostToDashpass()" style="margin-top:8px;background:#185FA5;">
+        Apply estimated lift to DashPass Enrollment Lift tab →
+      </button>
+      <p style="font-size:11px;color:#999997;margin-top:8px;line-height:1.5;">Better operational metrics translate to stronger DashPass order lift. Your visibility score maps to an estimated lift of <strong id="v_capture_preview" style="color:#185FA5;">—</strong>.</p>
+    </div>
+
+  </div><!-- /tab-visibility -->
+
+  <!-- Resources & Disclaimer -->
+  <div class="card" style="margin-top:1.5rem;">
+    <p class="sec-hdr" style="margin-bottom:0.75rem;">Resources</p>
+    <p style="font-size:12px;color:#666663;margin-bottom:0.875rem;line-height:1.6;">Learn more about the programs and strategies modeled in this tool from DoorDash's public merchant resources.</p>
+
+    <div style="display:flex;flex-direction:column;gap:0.5rem;">
+      <a href="https://get.doordash.com/en-us/solutions/dashpass" target="_blank" rel="noopener"
+         style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f5f5f3;border-radius:8px;text-decoration:none;border:0.5px solid rgba(0,0,0,0.08);">
+        <div>
+          <p style="font-size:13px;font-weight:500;color:#185FA5;margin-bottom:2px;">DashPass for Merchants</p>
+          <p style="font-size:11px;color:#999997;">Overview of DashPass benefits, enrollment, and how it drives order volume</p>
+        </div>
+        <span style="font-size:13px;color:#999997;margin-left:12px;flex-shrink:0;">↗</span>
+      </a>
+
+      <a href="https://get.doordash.com/en-us/blog/menu-optimization-tips" target="_blank" rel="noopener"
+         style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f5f5f3;border-radius:8px;text-decoration:none;border:0.5px solid rgba(0,0,0,0.08);">
+        <div>
+          <p style="font-size:13px;font-weight:500;color:#185FA5;margin-bottom:2px;">Menu Optimization Tips</p>
+          <p style="font-size:11px;color:#999997;">Best practices for menu pricing, item presentation, and driving higher AOV</p>
+        </div>
+        <span style="font-size:13px;color:#999997;margin-left:12px;flex-shrink:0;">↗</span>
+      </a>
+
+      <a href="https://get.doordash.com/en-us/blog/doordash-merchant-visibility" target="_blank" rel="noopener"
+         style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f5f5f3;border-radius:8px;text-decoration:none;border:0.5px solid rgba(0,0,0,0.08);">
+        <div>
+          <p style="font-size:13px;font-weight:500;color:#185FA5;margin-bottom:2px;">How Merchant Visibility Works</p>
+          <p style="font-size:11px;color:#999997;">How ratings, cancellation rate, and order accuracy affect your placement on DoorDash</p>
+        </div>
+        <span style="font-size:13px;color:#999997;margin-left:12px;flex-shrink:0;">↗</span>
+      </a>
+
+      <a href="https://help.doordash.com/merchants/s/" target="_blank" rel="noopener"
+         style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f5f5f3;border-radius:8px;text-decoration:none;border:0.5px solid rgba(0,0,0,0.08);">
+        <div>
+          <p style="font-size:13px;font-weight:500;color:#185FA5;margin-bottom:2px;">Merchant Help Center</p>
+          <p style="font-size:11px;color:#999997;">Support articles, account management, and platform how-tos for DoorDash merchants</p>
+        </div>
+        <span style="font-size:13px;color:#999997;margin-left:12px;flex-shrink:0;">↗</span>
+      </a>
+    </div>
+
+    <div style="margin-top:1.25rem;padding-top:1rem;border-top:0.5px solid rgba(0,0,0,0.08);">
+      <p style="font-size:11px;color:#999997;line-height:1.7;">
+        <strong style="font-weight:500;color:#666663;">Disclaimer</strong> — This tool is designed solely for illustrative and planning purposes. All revenue projections, order lift estimates, commission savings, and visibility boost figures are simulations based on aggregate DoorDash platform data and general market trends. They are not derived from any merchant's individual historical performance and do not represent a guarantee, commitment, or prediction of future results. Actual outcomes will vary based on local market conditions, merchant-specific performance, competitive dynamics, consumer behavior, and other factors outside DoorDash's control. DashPass subscriber density, order lift ranges, and visibility score contributions are model estimates and may not reflect conditions in every market. This simulator should be used as one input in a broader business conversation, not as the sole basis for a financial decision.
+      </p>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ── CITIES array removed — lift is now a direct slider input ──
+const CITIES_PLACEHOLDER = [
+  // ── Alabama ─────────────────────────────────────────────
+  { name: "Birmingham, AL",        density: 0.16 },
+  { name: "Huntsville, AL",        density: 0.17 },
+  { name: "Mobile, AL",            density: 0.14 },
+  { name: "Montgomery, AL",        density: 0.14 },
+  // ── Alaska ──────────────────────────────────────────────
+  { name: "Anchorage, AK",         density: 0.16 },
+  // ── Arizona ─────────────────────────────────────────────
+  { name: "Chandler, AZ",          density: 0.20 },
+  { name: "Gilbert, AZ",           density: 0.19 },
+  { name: "Glendale, AZ",          density: 0.18 },
+  { name: "Mesa, AZ",              density: 0.20 },
+  { name: "Phoenix, AZ",           density: 0.21 },
+  { name: "Scottsdale, AZ",        density: 0.24 },
+  { name: "Tempe, AZ",             density: 0.22 },
+  { name: "Tucson, AZ",            density: 0.15 },
+  // ── Arkansas ────────────────────────────────────────────
+  { name: "Fayetteville, AR",      density: 0.16 },
+  { name: "Little Rock, AR",       density: 0.15 },
+  // ── California ──────────────────────────────────────────
+  { name: "Anaheim, CA",           density: 0.26 },
+  { name: "Bakersfield, CA",       density: 0.16 },
+  { name: "Chula Vista, CA",       density: 0.22 },
+  { name: "Fresno, CA",            density: 0.17 },
+  { name: "Irvine, CA",            density: 0.28 },
+  { name: "Long Beach, CA",        density: 0.28 },
+  { name: "Los Angeles, CA",       density: 0.33 },
+  { name: "Oakland, CA",           density: 0.32 },
+  { name: "Riverside, CA",         density: 0.19 },
+  { name: "Sacramento, CA",        density: 0.23 },
+  { name: "San Bernardino, CA",    density: 0.16 },
+  { name: "San Diego, CA",         density: 0.27 },
+  { name: "San Francisco, CA",     density: 0.40 },
+  { name: "San Jose, CA",          density: 0.38 },
+  { name: "Santa Ana, CA",         density: 0.22 },
+  { name: "Santa Barbara, CA",     density: 0.26 },
+  { name: "Santa Rosa, CA",        density: 0.24 },
+  { name: "Stockton, CA",          density: 0.16 },
+  // ── Colorado ────────────────────────────────────────────
+  { name: "Aurora, CO",            density: 0.22 },
+  { name: "Boulder, CO",           density: 0.32 },
+  { name: "Colorado Springs, CO",  density: 0.19 },
+  { name: "Denver, CO",            density: 0.30 },
+  { name: "Fort Collins, CO",      density: 0.24 },
+  // ── Connecticut ─────────────────────────────────────────
+  { name: "Bridgeport, CT",        density: 0.18 },
+  { name: "Hartford, CT",          density: 0.20 },
+  { name: "New Haven, CT",         density: 0.26 },
+  { name: "Stamford, CT",          density: 0.30 },
+  // ── Delaware ────────────────────────────────────────────
+  { name: "Wilmington, DE",        density: 0.21 },
+  // ── Florida ─────────────────────────────────────────────
+  { name: "Cape Coral, FL",        density: 0.17 },
+  { name: "Fort Lauderdale, FL",   density: 0.24 },
+  { name: "Gainesville, FL",       density: 0.22 },
+  { name: "Jacksonville, FL",      density: 0.17 },
+  { name: "Miami, FL",             density: 0.25 },
+  { name: "Naples, FL",            density: 0.18 },
+  { name: "Orlando, FL",           density: 0.20 },
+  { name: "Pensacola, FL",         density: 0.16 },
+  { name: "St. Petersburg, FL",    density: 0.21 },
+  { name: "Tallahassee, FL",       density: 0.19 },
+  { name: "Tampa, FL",             density: 0.20 },
+  // ── Georgia ─────────────────────────────────────────────
+  { name: "Athens, GA",            density: 0.20 },
+  { name: "Atlanta, GA",           density: 0.24 },
+  { name: "Augusta, GA",           density: 0.15 },
+  { name: "Columbus, GA",          density: 0.14 },
+  { name: "Savannah, GA",          density: 0.18 },
+  // ── Hawaii ──────────────────────────────────────────────
+  { name: "Honolulu, HI",          density: 0.26 },
+  // ── Idaho ───────────────────────────────────────────────
+  { name: "Boise, ID",             density: 0.22 },
+  { name: "Idaho Falls, ID",       density: 0.14 },
+  // ── Illinois ────────────────────────────────────────────
+  { name: "Aurora, IL",            density: 0.19 },
+  { name: "Chicago, IL",           density: 0.28 },
+  { name: "Joliet, IL",            density: 0.17 },
+  { name: "Naperville, IL",        density: 0.25 },
+  { name: "Peoria, IL",            density: 0.15 },
+  { name: "Rockford, IL",          density: 0.14 },
+  { name: "Springfield, IL",       density: 0.15 },
+  // ── Indiana ─────────────────────────────────────────────
+  { name: "Evansville, IN",        density: 0.14 },
+  { name: "Fort Wayne, IN",        density: 0.15 },
+  { name: "Indianapolis, IN",      density: 0.17 },
+  { name: "South Bend, IN",        density: 0.16 },
+  // ── Iowa ────────────────────────────────────────────────
+  { name: "Cedar Rapids, IA",      density: 0.15 },
+  { name: "Des Moines, IA",        density: 0.19 },
+  { name: "Iowa City, IA",         density: 0.20 },
+  // ── Kansas ──────────────────────────────────────────────
+  { name: "Kansas City, KS",       density: 0.17 },
+  { name: "Topeka, KS",            density: 0.14 },
+  { name: "Wichita, KS",           density: 0.15 },
+  // ── Kentucky ────────────────────────────────────────────
+  { name: "Lexington, KY",         density: 0.18 },
+  { name: "Louisville, KY",        density: 0.16 },
+  // ── Louisiana ───────────────────────────────────────────
+  { name: "Baton Rouge, LA",       density: 0.17 },
+  { name: "Lafayette, LA",         density: 0.16 },
+  { name: "New Orleans, LA",       density: 0.19 },
+  { name: "Shreveport, LA",        density: 0.14 },
+  // ── Maine ───────────────────────────────────────────────
+  { name: "Portland, ME",          density: 0.23 },
+  // ── Maryland ────────────────────────────────────────────
+  { name: "Baltimore, MD",         density: 0.22 },
+  { name: "Frederick, MD",         density: 0.21 },
+  // ── Massachusetts ───────────────────────────────────────
+  { name: "Boston, MA",            density: 0.35 },
+  { name: "Cambridge, MA",         density: 0.36 },
+  { name: "Lowell, MA",            density: 0.20 },
+  { name: "Springfield, MA",       density: 0.18 },
+  { name: "Worcester, MA",         density: 0.21 },
+  // ── Michigan ────────────────────────────────────────────
+  { name: "Ann Arbor, MI",         density: 0.28 },
+  { name: "Detroit, MI",           density: 0.16 },
+  { name: "Flint, MI",             density: 0.13 },
+  { name: "Grand Rapids, MI",      density: 0.18 },
+  { name: "Kalamazoo, MI",         density: 0.17 },
+  { name: "Lansing, MI",           density: 0.17 },
+  // ── Minnesota ───────────────────────────────────────────
+  { name: "Duluth, MN",            density: 0.17 },
+  { name: "Minneapolis, MN",       density: 0.23 },
+  { name: "Rochester, MN",         density: 0.19 },
+  { name: "St. Paul, MN",          density: 0.22 },
+  // ── Mississippi ─────────────────────────────────────────
+  { name: "Biloxi, MS",            density: 0.14 },
+  { name: "Jackson, MS",           density: 0.13 },
+  // ── Missouri ────────────────────────────────────────────
+  { name: "Columbia, MO",          density: 0.19 },
+  { name: "Kansas City, MO",       density: 0.18 },
+  { name: "Springfield, MO",       density: 0.16 },
+  { name: "St. Louis, MO",         density: 0.17 },
+  // ── Montana ─────────────────────────────────────────────
+  { name: "Billings, MT",          density: 0.14 },
+  { name: "Missoula, MT",          density: 0.17 },
+  // ── Nebraska ────────────────────────────────────────────
+  { name: "Lincoln, NE",           density: 0.17 },
+  { name: "Omaha, NE",             density: 0.18 },
+  // ── Nevada ──────────────────────────────────────────────
+  { name: "Henderson, NV",         density: 0.20 },
+  { name: "Las Vegas, NV",         density: 0.20 },
+  { name: "Reno, NV",              density: 0.19 },
+  // ── New Hampshire ───────────────────────────────────────
+  { name: "Manchester, NH",        density: 0.20 },
+  { name: "Nashua, NH",            density: 0.21 },
+  // ── New Jersey ──────────────────────────────────────────
+  { name: "Jersey City, NJ",       density: 0.30 },
+  { name: "Newark, NJ",            density: 0.24 },
+  { name: "Trenton, NJ",           density: 0.18 },
+  // ── New Mexico ──────────────────────────────────────────
+  { name: "Albuquerque, NM",       density: 0.16 },
+  { name: "Santa Fe, NM",          density: 0.18 },
+  // ── New York ────────────────────────────────────────────
+  { name: "Albany, NY",            density: 0.22 },
+  { name: "Buffalo, NY",           density: 0.19 },
+  { name: "New York, NY",          density: 0.36 },
+  { name: "Rochester, NY",         density: 0.20 },
+  { name: "Syracuse, NY",          density: 0.18 },
+  { name: "Yonkers, NY",           density: 0.26 },
+  // ── North Carolina ──────────────────────────────────────
+  { name: "Asheville, NC",         density: 0.24 },
+  { name: "Chapel Hill, NC",       density: 0.27 },
+  { name: "Charlotte, NC",         density: 0.20 },
+  { name: "Durham, NC",            density: 0.26 },
+  { name: "Greensboro, NC",        density: 0.17 },
+  { name: "Raleigh, NC",           density: 0.24 },
+  { name: "Winston-Salem, NC",     density: 0.16 },
+  // ── North Dakota ────────────────────────────────────────
+  { name: "Bismarck, ND",          density: 0.14 },
+  { name: "Fargo, ND",             density: 0.15 },
+  // ── Ohio ────────────────────────────────────────────────
+  { name: "Akron, OH",             density: 0.16 },
+  { name: "Cincinnati, OH",        density: 0.17 },
+  { name: "Cleveland, OH",         density: 0.16 },
+  { name: "Columbus, OH",          density: 0.18 },
+  { name: "Dayton, OH",            density: 0.15 },
+  { name: "Toledo, OH",            density: 0.15 },
+  // ── Oklahoma ────────────────────────────────────────────
+  { name: "Norman, OK",            density: 0.16 },
+  { name: "Oklahoma City, OK",     density: 0.15 },
+  { name: "Tulsa, OK",             density: 0.16 },
+  // ── Oregon ──────────────────────────────────────────────
+  { name: "Bend, OR",              density: 0.24 },
+  { name: "Eugene, OR",            density: 0.24 },
+  { name: "Portland, OR",          density: 0.28 },
+  { name: "Salem, OR",             density: 0.19 },
+  // ── Pennsylvania ────────────────────────────────────────
+  { name: "Allentown, PA",         density: 0.18 },
+  { name: "Philadelphia, PA",      density: 0.26 },
+  { name: "Pittsburgh, PA",        density: 0.20 },
+  { name: "Scranton, PA",          density: 0.16 },
+  // ── Rhode Island ────────────────────────────────────────
+  { name: "Providence, RI",        density: 0.24 },
+  // ── South Carolina ──────────────────────────────────────
+  { name: "Charleston, SC",        density: 0.22 },
+  { name: "Columbia, SC",          density: 0.18 },
+  { name: "Greenville, SC",        density: 0.19 },
+  { name: "Myrtle Beach, SC",      density: 0.17 },
+  // ── South Dakota ────────────────────────────────────────
+  { name: "Rapid City, SD",        density: 0.14 },
+  { name: "Sioux Falls, SD",       density: 0.15 },
+  // ── Tennessee ───────────────────────────────────────────
+  { name: "Chattanooga, TN",       density: 0.18 },
+  { name: "Knoxville, TN",         density: 0.19 },
+  { name: "Memphis, TN",           density: 0.15 },
+  { name: "Nashville, TN",         density: 0.24 },
+  // ── Texas ───────────────────────────────────────────────
+  { name: "Amarillo, TX",          density: 0.14 },
+  { name: "Arlington, TX",         density: 0.19 },
+  { name: "Austin, TX",            density: 0.32 },
+  { name: "Corpus Christi, TX",    density: 0.15 },
+  { name: "Dallas, TX",            density: 0.22 },
+  { name: "El Paso, TX",           density: 0.15 },
+  { name: "Fort Worth, TX",        density: 0.20 },
+  { name: "Frisco, TX",            density: 0.24 },
+  { name: "Houston, TX",           density: 0.21 },
+  { name: "Irving, TX",            density: 0.20 },
+  { name: "Laredo, TX",            density: 0.13 },
+  { name: "Lubbock, TX",           density: 0.14 },
+  { name: "McAllen, TX",           density: 0.14 },
+  { name: "Midland, TX",           density: 0.14 },
+  { name: "Plano, TX",             density: 0.24 },
+  { name: "San Antonio, TX",       density: 0.18 },
+  { name: "Waco, TX",              density: 0.15 },
+  // ── Utah ────────────────────────────────────────────────
+  { name: "Ogden, UT",             density: 0.17 },
+  { name: "Provo, UT",             density: 0.19 },
+  { name: "Salt Lake City, UT",    density: 0.22 },
+  { name: "St. George, UT",        density: 0.16 },
+  // ── Vermont ─────────────────────────────────────────────
+  { name: "Burlington, VT",        density: 0.24 },
+  // ── Virginia ────────────────────────────────────────────
+  { name: "Alexandria, VA",        density: 0.32 },
+  { name: "Chesapeake, VA",        density: 0.18 },
+  { name: "Norfolk, VA",           density: 0.19 },
+  { name: "Richmond, VA",          density: 0.19 },
+  { name: "Roanoke, VA",           density: 0.16 },
+  { name: "Virginia Beach, VA",    density: 0.19 },
+  // ── Washington ──────────────────────────────────────────
+  { name: "Bellevue, WA",          density: 0.36 },
+  { name: "Seattle, WA",           density: 0.37 },
+  { name: "Spokane, WA",           density: 0.19 },
+  { name: "Tacoma, WA",            density: 0.24 },
+  // ── Washington DC ───────────────────────────────────────
+  { name: "Washington, DC",        density: 0.35 },
+  // ── West Virginia ───────────────────────────────────────
+  { name: "Charleston, WV",        density: 0.14 },
+  { name: "Huntington, WV",        density: 0.13 },
+  // ── Wisconsin ───────────────────────────────────────────
+  { name: "Green Bay, WI",         density: 0.15 },
+  { name: "Madison, WI",           density: 0.24 },
+  { name: "Milwaukee, WI",         density: 0.17 },
+  // ── Wyoming ─────────────────────────────────────────────
+  { name: "Casper, WY",            density: 0.13 },
+  { name: "Cheyenne, WY",          density: 0.14 },
+
+  // ── Canada ──────────────────────────────────────────────
+  { name: "Calgary, AB",           density: 0.22 },
+  { name: "Edmonton, AB",          density: 0.20 },
+  { name: "Halifax, NS",           density: 0.19 },
+  { name: "Hamilton, ON",          density: 0.20 },
+  { name: "Mississauga, ON",       density: 0.21 },
+  { name: "Montreal, QC",          density: 0.26 },
+  { name: "Ottawa, ON",            density: 0.24 },
+  { name: "Quebec City, QC",       density: 0.20 },
+  { name: "Toronto, ON",           density: 0.28 },
+  { name: "Vancouver, BC",         density: 0.30 },
+  { name: "Winnipeg, MB",          density: 0.18 },
+];
+
+// ── Helpers ──────────────────────────────────────────────
+function f$(n) {
+  return (n < 0 ? '-$' : '$') + Math.abs(Math.round(n)).toLocaleString();
+}
+function fN(n) { return Math.round(n).toLocaleString(); }
+
+// ── Tabs ────────────────────────────────────────────────
+function showTab(name, btn) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── Inflation simulator ──────────────────────────────────
+
+
+function calcInflation() {
+  const l90    = Math.max(1, parseFloat(document.getElementById('i_l90').value) || 50000);
+  const aov    = Math.max(0.01, parseFloat(document.getElementById('i_aov').value) || 35);
+  const curInf = parseFloat(document.getElementById('i_cur_inf').value) / 100;
+  const tgtInf = parseFloat(document.getElementById('i_tgt_inf').value) / 100;
+  const boost  = parseFloat(document.getElementById('i_boost').value) / 100;
+
+  const curOrders = l90 / aov;
+  const newAov    = (aov / (1 + curInf)) * (1 + tgtInf);
+  const newOrders = curOrders * (1 + boost);
+  const newRev    = newAov * newOrders;
+  const diff      = newRev - l90;
+
+  document.getElementById('i_m_cur').textContent  = f$(l90);
+  document.getElementById('i_m_sim').textContent  = f$(newRev);
+
+  const diffEl = document.getElementById('i_m_diff');
+  diffEl.textContent = (diff >= 0 ? '+' : '') + f$(diff);
+  diffEl.style.color = diff >= 0 ? '#3B6D11' : '#A32D2D';
+
+  document.getElementById('i_b_ord_cur').textContent = fN(curOrders);
+  document.getElementById('i_b_ord_sim').textContent = fN(newOrders) + ' (+' + (boost * 100).toFixed(0) + '%)';
+  document.getElementById('i_b_aov_cur').textContent = '$' + aov.toFixed(2);
+  document.getElementById('i_b_aov_sim').textContent = '$' + newAov.toFixed(2);
+  document.getElementById('i_b_rev_cur').textContent = f$(l90);
+  document.getElementById('i_b_rev_sim').textContent = f$(newRev);
+
+  document.getElementById('i_note').textContent =
+    'Reducing menu price inflation from ' + Math.round(curInf * 100) + '% → ' +
+    Math.round(tgtInf * 100) + '% lowers avg. order value by ' +
+    Math.round(Math.abs(((newAov - aov) / aov * 100))) +
+    '%, offset by ' + Math.round(boost * 100) + '% more orders from improved visibility.';
+
+}
+
+// ── DashPass simulator ───────────────────────────────────
+
+function toggleDashpassEnrolled() {
+  const notEnrolled = document.getElementById('d_not_enrolled').checked;
+  document.getElementById('d_dp_cur_row').style.display         = notEnrolled ? 'none' : '';
+  document.getElementById('d_dp_enrollment_note').style.display = notEnrolled ? '' : 'none';
+  document.getElementById('d_dp_new_label').textContent = notEnrolled
+    ? 'DashPass commission rate (upon enrollment)'
+    : 'Proposed commission rate';
+  document.getElementById('d_dp_new_def').textContent = notEnrolled
+    ? 'The DashPass commission rate this merchant would pay after enrolling. New DashPass orders generated by the lift are charged at this rate.'
+    : 'The proposed commission rate on DashPass orders with enrollment.';
+}
+
+function togglePickupEnrolled() {
+  const notEnrolled = document.getElementById('d_not_enrolled_pu').checked;
+  document.getElementById('d_pu_cur_row').style.display = notEnrolled ? 'none' : '';
+  document.getElementById('d_pu_l90_row').style.display = notEnrolled ? 'none' : '';
+}
+
+function calcDashpass() {
+  const l90     = Math.max(1, parseFloat(document.getElementById('d_l90').value) || 50000);
+  const aov     = Math.max(0.01, parseFloat(document.getElementById('d_aov').value) || 35);
+  const mcCur   = parseFloat(document.getElementById('d_mc_cur').value) / 100;
+  const mcNew   = parseFloat(document.getElementById('d_mc_new').value) / 100;
+
+  const dpEnrolled = !document.getElementById('d_not_enrolled').checked;
+  const dpCur   = dpEnrolled ? parseFloat(document.getElementById('d_dp_cur').value) / 100 : mcCur;
+  const dpNew   = parseFloat(document.getElementById('d_dp_new').value) / 100;
+
+  const puEnrolled = !document.getElementById('d_not_enrolled_pu').checked;
+  const puRevL90 = puEnrolled ? Math.max(0, parseFloat(document.getElementById('d_pu_l90').value) || 0) : 0;
+  const puCur   = puEnrolled ? parseFloat(document.getElementById('d_pu_cur').value) / 100 : mcCur;
+  const puNew   = parseFloat(document.getElementById('d_pu_new').value) / 100;
+
+  // DashPass lift (direct slider, 20–40%)
+  const liftPct      = parseFloat(document.getElementById('d_lift').value) / 100;
+  const curOrders    = l90 / aov;
+  const dpLiftOrders = curOrders * liftPct;
+  const newOrders    = curOrders + dpLiftOrders;
+  const dpLiftRev    = dpLiftOrders * aov;
+
+  // Revenue channels: classic = L90 minus pickup portion
+  const classicRevL90 = Math.max(0, l90 - puRevL90);
+
+  // Current net revenue
+  const effectiveCurRate = dpEnrolled ? dpCur : mcCur;
+  const curNet = classicRevL90 * (1 - effectiveCurRate) + puRevL90 * (1 - puCur);
+
+  // Simulated net revenue
+  // Existing classic orders → mc_new; existing pickup → pu_new; new DP lift orders → dp_new
+  const simNet = classicRevL90 * (1 - mcNew) + puRevL90 * (1 - puNew) + dpLiftRev * (1 - dpNew);
+
+  const newGrossRev = l90 + dpLiftRev;
+  const netDiff     = simNet - curNet;
+  const annual      = netDiff * (365 / 90);
+
+  document.getElementById('d_annual').textContent = (annual >= 0 ? '+' : '') + f$(annual) + ' / yr';
+  document.getElementById('d_m_cur').textContent  = f$(curNet);
+  document.getElementById('d_m_sim').textContent  = f$(simNet);
+
+  const diffEl = document.getElementById('d_m_diff');
+  diffEl.textContent = (netDiff >= 0 ? '+' : '') + f$(netDiff);
+  diffEl.style.color = netDiff >= 0 ? '#3B6D11' : '#A32D2D';
+
+  document.getElementById('d_b_ord_cur').textContent  = fN(curOrders);
+  document.getElementById('d_b_ord_sim').textContent  = fN(newOrders) + ' (+' + (liftPct * 100).toFixed(1) + '%)';
+  document.getElementById('d_b_aov_cur').textContent  = '$' + aov.toFixed(2);
+  document.getElementById('d_b_aov_sim').textContent  = '$' + aov.toFixed(2);
+  document.getElementById('d_b_lift_pct').textContent = '+' + (liftPct * 100).toFixed(1) + '%';
+  document.getElementById('d_b_rev_cur').textContent  = f$(l90);
+  document.getElementById('d_b_rev_sim').textContent  = f$(newGrossRev);
+
+  document.getElementById('d_b_comm_mc').textContent     = Math.round(mcCur * 100) + '%';
+  document.getElementById('d_b_comm_mc_new').textContent = Math.round(mcNew * 100) + '%';
+  document.getElementById('d_b_comm_dp').textContent     = dpEnrolled ? Math.round(dpCur * 100) + '%' : 'Not enrolled';
+  document.getElementById('d_b_comm_dp_new').textContent = Math.round(dpNew * 100) + '%';
+
+  const puRow = document.getElementById('d_b_pu_row');
+  if (puRow) {
+    puRow.style.display = puEnrolled ? '' : 'none';
+    if (puEnrolled) {
+      document.getElementById('d_b_comm_pu').textContent     = Math.round(puCur * 100) + '%';
+      document.getElementById('d_b_comm_pu_new').textContent = Math.round(puNew * 100) + '%';
+    }
+  }
+
+  document.getElementById('d_b_net_cur').textContent  = f$(curNet);
+  document.getElementById('d_b_net_sim').textContent  = f$(simNet);
+
+  document.getElementById('d_note').textContent =
+    'Based on a ' + Math.round(liftPct * 100) + '% estimated DashPass order lift. ' +
+    (puEnrolled ? 'Includes pickup commission impact on $' + Math.round(puRevL90).toLocaleString() + ' in pickup revenue. ' : '') +
+    'Lift estimates based on DoorDash DashPass penetration in your market.';
+}
+
+// ── Visibility score simulator ───────────────────────
+const METRICS = [
+  {
+    id: 'rating',
+    label: 'Star rating',
+    def: 'Average customer rating out of 5.0. One of the strongest signals in placement algorithms.',
+    unit: '★', unitPos: 'after',
+    min: 1.0, max: 5.0, step: 0.1, defaultVal: 4.5,
+    weight: 0.25, maxContrib: 7.5,
+    benchmark: '≥ 4.7',
+    score: v => Math.max(0, Math.min(1, (v - 3.5) / (4.8 - 3.5))),
+    atBenchmark: v => v >= 4.7
+  },
+  {
+    id: 'cancel',
+    label: 'Cancellation rate',
+    def: 'Percentage of accepted orders subsequently cancelled. Lower is better — high cancellation significantly hurts ranking.',
+    unit: '%', unitPos: 'after',
+    min: 0, max: 15, step: 0.5, defaultVal: 2,
+    weight: 0.25, maxContrib: 7.5,
+    benchmark: '≤ 1%',
+    score: v => Math.max(0, Math.min(1, (5 - v) / (5 - 0.5))),
+    atBenchmark: v => v <= 1,
+    lowerBetter: true
+  },
+  {
+    id: 'defect',
+    label: 'Missing and incorrect',
+    def: 'Percentage of orders reported as missing items or containing incorrect items. Lower is better — directly impacts customer satisfaction scores.',
+    unit: '%', unitPos: 'after',
+    min: 0, max: 10, step: 0.5, defaultVal: 2,
+    weight: 0.25, maxContrib: 7.5,
+    benchmark: '≤ 1%',
+    score: v => Math.max(0, Math.min(1, (5 - v) / (5 - 0.5))),
+    atBenchmark: v => v <= 1,
+    lowerBetter: true
+  },
+  {
+    id: 'downtime',
+    label: 'Store downtime',
+    def: 'Percentage of expected operating hours the store is closed or paused on the platform. Lower is better — frequent downtime reduces placement and suppresses order volume.',
+    unit: '%', unitPos: 'after',
+    min: 0, max: 30, step: 0.5, defaultVal: 5,
+    weight: 0.25, maxContrib: 7.5,
+    benchmark: '≤ 2%',
+    score: v => Math.max(0, Math.min(1, (20 - v) / (20 - 0.5))),
+    atBenchmark: v => v <= 2,
+    lowerBetter: true
+  }
+];
+
+const CONTRIB_COLORS = ['#185FA5','#378ADD','#1D9E75','#639922','#BA7517'];
+
+function metricDisplayVal(m, v) {
+  const val = m.step < 1 ? parseFloat(v).toFixed(1) : parseInt(v);
+  return m.unit === '★' ? val + ' ★' : val + '%';
+}
+
+function statusColor(atBench, score) {
+  if (atBench) return '#3B6D11';
+  if (score > 0.5) return '#BA7517';
+  return '#D85A30';
+}
+
+function renderMetricsTab() {
+  const container = document.getElementById('metrics_sliders');
+  container.innerHTML = METRICS.map((m, i) => `
+    <div class="metric-sl-row">
+      <div class="metric-sl-top">
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;">
+            <span class="status-dot" id="sd_${m.id}" style="background:#e0e0de;"></span>
+            <span class="sl-name">${m.label}</span>
+          </div>
+          <p class="def">${m.def}</p>
+        </div>
+        <span class="metric-badge" id="mv_${m.id}">${metricDisplayVal(m, m.defaultVal)}</span>
+      </div>
+      <input type="range" id="ms_${m.id}" min="${m.min}" max="${m.max}" step="${m.step}" value="${m.defaultVal}"
+        oninput="onMetricChange('${m.id}', this.value)">
+      <div class="metric-sl-footer">
+        <span class="metric-target">Optimal: ${m.benchmark}</span>
+        <div class="contrib-wrap">
+          <div class="contrib-track">
+            <div class="contrib-fill" id="mc_${m.id}" style="width:0%;background:${CONTRIB_COLORS[i]};"></div>
+          </div>
+          <span class="contrib-val" id="mv2_${m.id}" style="color:${CONTRIB_COLORS[i]};">+0%</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function onMetricChange(id, rawVal) {
+  const m = METRICS.find(x => x.id === id);
+  document.getElementById('mv_' + id).textContent = metricDisplayVal(m, rawVal);
+  calcVisibility();
+}
+
+function calcVisibility() {
+  let totalBoost = 10;
+  METRICS.forEach((m, i) => {
+    const v     = parseFloat(document.getElementById('ms_' + m.id).value);
+    const s     = m.score(v);
+    const contrib = s * m.maxContrib;
+    totalBoost += contrib;
+
+    const pct  = Math.min(100, Math.round((contrib / m.maxContrib) * 100));
+    const atB  = m.atBenchmark(v);
+    const col  = statusColor(atB, s);
+
+    document.getElementById('mc_' + m.id).style.width  = pct + '%';
+    document.getElementById('mv2_' + m.id).textContent = '+' + contrib.toFixed(1) + '%';
+    document.getElementById('sd_' + m.id).style.background = col;
+  });
+
+  const boostPct = Math.min(40, Math.max(10, Math.round(totalBoost)));
+  document.getElementById('v_total_boost').textContent = boostPct + '%';
+
+  const atOptimal = boostPct >= 28;
+  document.getElementById('v_total_boost').style.color = boostPct >= 28 ? '#3B6D11' : boostPct >= 18 ? '#BA7517' : '#D85A30';
+
+  const benchCount = METRICS.filter(m => {
+    const v = parseFloat(document.getElementById('ms_' + m.id).value);
+    return m.atBenchmark(v);
+  }).length;
+
+  document.getElementById('v_score_label').textContent =
+    benchCount + ' of ' + METRICS.length + ' metrics at benchmark' +
+    (atOptimal ? ' — optimal range' : boostPct >= 18 ? ' — room to improve' : ' — below target');
+
+  const capPreview = document.getElementById('v_capture_preview');
+  if (capPreview) capPreview.textContent = boostToLift(boostPct) + '%';
+
+  renderBreakdown();
+}
+
+function renderBreakdown() {
+  const container = document.getElementById('v_breakdown');
+  container.innerHTML = METRICS.map((m, i) => {
+    const v      = parseFloat(document.getElementById('ms_' + m.id).value);
+    const contrib = m.score(v) * m.maxContrib;
+    const maxW   = (m.maxContrib / 7.5) * 100;
+    const fillW  = (contrib / 7.5) * 100;
+    return `
+      <div class="breakdown-row">
+        <span class="breakdown-name">${m.label}</span>
+        <div class="breakdown-track" style="max-width:${maxW}%;">
+          <div class="breakdown-fill" style="width:${Math.min(100,(contrib/m.maxContrib)*100).toFixed(0)}%;background:${CONTRIB_COLORS[i]};"></div>
+        </div>
+        <span class="breakdown-val">+${contrib.toFixed(1)}%</span>
+      </div>
+    `;
+  }).join('') + `
+    <div class="breakdown-row" style="border-top:0.5px solid rgba(0,0,0,0.1);margin-top:4px;padding-top:10px;">
+      <span class="breakdown-name" style="font-weight:500;color:#1a1a18;">Base floor</span>
+      <div class="breakdown-track" style="max-width:100%;"><div class="breakdown-fill" style="width:${(10/7.5)*13.3}%;background:#c8c8c5;"></div></div>
+      <span class="breakdown-val">+10%</span>
+    </div>
+  `;
+}
+
+function boostToLift(boostPct) {
+  // Map visibility boost (10–40%) to DashPass order lift (20–40%)
+  // Better operational metrics → stronger DashPass lift
+  return Math.round(20 + (boostPct - 10) / 30 * 20);
+}
+
+function applyBoostToDashpass() {
+  const boostPct = parseInt(document.getElementById('v_total_boost').textContent);
+  const lift     = boostToLift(boostPct);
+  const slider   = document.getElementById('d_lift');
+  slider.value   = lift;
+  document.getElementById('d_o_lift').textContent = lift + '%';
+  calcDashpass();
+
+  const btn = document.getElementById('apply_dp_btn');
+  btn.textContent = '✓ Applied — now viewing DashPass Enrollment Lift tab';
+  btn.style.background = '#3B6D11';
+
+  setTimeout(() => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.getElementById('tab-dashpass').classList.add('active');
+    document.querySelectorAll('.tab-btn')[2].classList.add('active');
+    setTimeout(() => {
+      btn.textContent = 'Apply estimated lift to DashPass Enrollment Lift tab →';
+      btn.style.background = '#185FA5';
+    }, 800);
+  }, 900);
+}
+
+function applyBoostToInflation() {
+  const boostPct = parseInt(document.getElementById('v_total_boost').textContent);
+  const slider   = document.getElementById('i_boost');
+  const clamped  = Math.min(40, Math.max(10, boostPct));
+  slider.value   = clamped;
+  document.getElementById('i_o_boost').textContent = clamped + '%';
+  calcInflation();
+
+  const btn = document.getElementById('apply_btn');
+  btn.textContent = '✓ Applied — now viewing Menu Price Inflation tab';
+  btn.classList.add('applied');
+
+  setTimeout(() => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.getElementById('tab-inflation').classList.add('active');
+    document.querySelectorAll('.tab-btn')[1].classList.add('active');
+    setTimeout(() => {
+      btn.textContent = 'Apply this boost to Menu Price Inflation tab →';
+      btn.classList.remove('applied');
+    }, 800);
+  }, 900);
+}
+
+// ── Init ─────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  renderMetricsTab();
+  calcInflation();
+  calcDashpass();
+  calcVisibility();
+});
+</script>
+</body>
+</html>
