@@ -3601,7 +3601,7 @@
   <div class="upload-checklist" id="upload-checklist">
     <div class="ucl-header">
       <span class="ucl-title">📋 Weekly Upload Checklist</span>
-      <span class="ucl-status-summary" id="ucl-summary">0 of 9 reports ready</span>
+      <span class="ucl-status-summary" id="ucl-summary">0 of 11 reports ready</span>
     </div>
     <div class="ucl-items" id="ucl-items">
       <!-- populated by renderWeeklyChecklist() -->
@@ -6096,6 +6096,22 @@ function renderWeeklyChecklist() {
       scheduled: true,
       done: !!state.govEngagement,
       time: state.govEngagement ? state.govEngagement.uploadedAt : null,
+    },
+    {
+      id: 'ops-health',
+      name: 'Ops Health',
+      source: 'SMB AM Ops Dashboard → Sales Impact Store Detail',
+      scheduled: false,
+      done: !!(state.opsHealthData && state.opsHealthData.length),
+      time: null,
+    },
+    {
+      id: 'photo-coverage',
+      name: 'Photo Coverage',
+      source: 'SMB AM Ops Dashboard → Photo Coverage',
+      scheduled: false,
+      done: !!(state.photoCoverageData && state.photoCoverageData.length),
+      time: null,
     },
   ];
 
