@@ -3793,6 +3793,34 @@
           from the SMB AM Ops Dashboard in Sigma via the Uploads &amp; Library tab.</p>
         </div>
       </div>
+      <!-- Sigma Live Embed — SMB AM Ops Dashboard -->
+      <div class="opt-sigma-wrap" id="opt-sigma-wrap" style="margin-top:32px;">
+        <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--rule-soft);">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);">Live · SMB AM Ops Dashboard</span>
+          <a href="https://app.sigmacomputing.com/doordash/workbook/SMB-AM-Ops-Dashboard-xfgalXEDA1NwYhsm3hc0d" target="_blank" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);text-decoration:none;margin-left:auto;">Open in Sigma ↗</a>
+        </div>
+        <div class="tableau-tabs" id="opt-sigma-tabs">
+          <button class="tableau-tab active" onclick="switchOptTab(event,'opt-overview')">Overview</button>
+          <button class="tableau-tab" onclick="switchOptTab(event,'opt-downtime')">Downtime</button>
+          <button class="tableau-tab" onclick="switchOptTab(event,'opt-mi')">M&amp;I</button>
+          <button class="tableau-tab" onclick="switchOptTab(event,'opt-cancels')">Cancellations</button>
+          <button class="tableau-tab" onclick="switchOptTab(event,'opt-photos')">Photo Coverage</button>
+          <button class="tableau-tab" onclick="switchOptTab(event,'opt-ratings')">Ratings</button>
+          <button class="tableau-tab" onclick="switchOptTab(event,'opt-opps')">Improvements</button>
+        </div>
+        <div class="tableau-pane active" id="opt-overview">
+          <div style="padding:40px;text-align:center;background:var(--bg-card);border:1px solid var(--rule-soft);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:12px;">Paste the Sigma URL for this tab</div>
+            <div style="font-size:12px;color:var(--ink-soft);">Share the nodeId URL from the Sigma workbook for each tab to enable embedding here.</div>
+          </div>
+        </div>
+        <div class="tableau-pane" id="opt-downtime"><div style="padding:40px;text-align:center;background:var(--bg-card);border:1px solid var(--rule-soft);"><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-faint);">Downtime tab URL needed</div></div></div>
+        <div class="tableau-pane" id="opt-mi"><div style="padding:40px;text-align:center;background:var(--bg-card);border:1px solid var(--rule-soft);"><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-faint);">M&amp;I tab URL needed</div></div></div>
+        <div class="tableau-pane" id="opt-cancels"><div style="padding:40px;text-align:center;background:var(--bg-card);border:1px solid var(--rule-soft);"><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-faint);">Cancellations tab URL needed</div></div></div>
+        <div class="tableau-pane" id="opt-photos"><div style="padding:40px;text-align:center;background:var(--bg-card);border:1px solid var(--rule-soft);"><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-faint);">Photo Coverage tab URL needed</div></div></div>
+        <div class="tableau-pane" id="opt-ratings"><div style="padding:40px;text-align:center;background:var(--bg-card);border:1px solid var(--rule-soft);"><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-faint);">Ratings tab URL needed</div></div></div>
+        <div class="tableau-pane" id="opt-opps"><div style="padding:40px;text-align:center;background:var(--bg-card);border:1px solid var(--rule-soft);"><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-faint);">Improvements tab URL needed</div></div></div>
+      </div>
     </div>
   </section>
 
@@ -11179,6 +11207,14 @@ function renderOptimizations() {
   if (sec && currentPage === 'optimizations') { sec.classList.add('visible'); sec.classList.remove('collapsed'); sec.style.display = 'block'; }
 }
 
+
+function switchOptTab(evt, tabId) {
+  document.querySelectorAll('#opt-sigma-tabs .tableau-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('#opt-sigma-wrap .tableau-pane').forEach(p=>p.classList.remove('active'));
+  if (evt && evt.currentTarget) evt.currentTarget.classList.add('active');
+  const pane = document.getElementById(tabId);
+  if (pane) pane.classList.add('active');
+}
 function filterOptCards() {
   const ao   = (document.getElementById('opt-ao-filter')  ||{}).value || 'All';
   const sub  = (document.getElementById('opt-sub-filter') ||{}).value || 'All';
