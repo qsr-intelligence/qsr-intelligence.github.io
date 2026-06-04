@@ -10766,11 +10766,12 @@ function showPage(page, linkEl) {
   const dz = document.getElementById('dropzone');
   if (dz) dz.style.display = cfg.uploadFocus ? '' : 'none';
 
-  // Engagement tab: force section visible and render regardless of load timing
+  // Engagement tab: force section visible, expanded, and render regardless of load timing
   const mxengSection = document.getElementById('sec-mxeng');
   if (page === 'engagement') {
     if (mxengSection) {
       mxengSection.classList.add('visible');
+      mxengSection.classList.remove('collapsed');  // ensure body is not hidden
       mxengSection.style.display = 'block';
     }
     // Render immediately if data exists, then again after fetch window
