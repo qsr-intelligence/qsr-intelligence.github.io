@@ -3378,6 +3378,38 @@
   .serve-coaching-flag strong { color:var(--ink); }
   .serve-theme-chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
   .serve-theme-chip { font-family:"JetBrains Mono",monospace; font-size:10px; padding:3px 10px; background:var(--bg-elevated); border:1px solid var(--rule-soft); color:var(--ink-soft); }
+
+  /* ── Loyalty Tips Panel ─────────────────────────────────────────────────── */
+  .loyalty-tips-wrap { margin-top: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 900px) { .loyalty-tips-wrap { grid-template-columns: 1fr; } }
+  .loy-panel { background: var(--bg-card); border: 1px solid var(--rule-soft); padding: 20px 22px; }
+  .loy-panel-title { font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .loy-panel-title::after { content: ''; flex: 1; height: 1px; background: var(--rule-soft); }
+
+  /* Threshold rows */
+  .loy-threshold { display: grid; grid-template-columns: 10px 1fr; gap: 0 12px; align-items: start; margin-bottom: 14px; }
+  .loy-threshold:last-child { margin-bottom: 0; }
+  .loy-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+  .loy-dot.green  { background: var(--green); }
+  .loy-dot.amber  { background: var(--amber); }
+  .loy-dot.red    { background: var(--red); }
+  .loy-threshold-label { font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 600; color: var(--ink); }
+  .loy-threshold-range { font-family: "JetBrains Mono", monospace; font-size: 10px; color: var(--ink-faint); margin-bottom: 3px; }
+  .loy-threshold-why { font-size: 11px; color: var(--ink-soft); line-height: 1.5; }
+
+  /* Metric definition cards */
+  .loy-def { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--rule-soft); }
+  .loy-def:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .loy-def-term { font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .loy-def-desc { font-size: 11px; color: var(--ink-soft); line-height: 1.5; }
+  .loy-def-impact { font-size: 10px; color: var(--accent); font-style: italic; margin-top: 3px; }
+
+  /* AO tips */
+  .loy-tip { display: flex; gap: 10px; margin-bottom: 10px; }
+  .loy-tip:last-child { margin-bottom: 0; }
+  .loy-tip-num { font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+  .loy-tip-text { font-size: 11px; color: var(--ink-soft); line-height: 1.5; }
+  .loy-tip-text strong { color: var(--ink); }
 </style>
 </head>
 <body>
@@ -3680,6 +3712,133 @@
           <h3>No SERVE data loaded</h3>
           <p>Upload a SERVE scorecard CSV from the Uploads & Library tab.<br>
           Expected columns: Business ID · Business Name · Rep · Call Summary · S · E · R · V · E</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Loyalty Tips & Threshold Definitions -->
+  <section class="section" id="sec-loyalty-tips">
+    <div class="section-body" style="padding-top:0;">
+      <div class="loyalty-tips-wrap">
+
+        <!-- Column 1: Metric Definitions + Thresholds -->
+        <div style="display:flex;flex-direction:column;gap:20px;">
+
+          <div class="loy-panel">
+            <div class="loy-panel-title">Metric Definitions</div>
+
+            <div class="loy-def">
+              <div class="loy-def-term">DashPass Selection Rate</div>
+              <div class="loy-def-desc">The % of eligible orders placed by DashPass members where DashPass pricing was applied. Reflects how well the merchant is positioned to capture high-frequency DashPass consumer spend.</div>
+              <div class="loy-def-impact">Higher selection = more order volume from DashPass's most loyal, high-LTV consumers.</div>
+            </div>
+
+            <div class="loy-def">
+              <div class="loy-def-term">DashPass Order Share</div>
+              <div class="loy-def-desc">% of total merchant orders that come from DashPass members. Benchmarks the merchant's penetration into DashPass's subscriber base relative to category peers.</div>
+              <div class="loy-def-impact">Low share signals missed visibility — DashPass members are not discovering or choosing this restaurant.</div>
+            </div>
+
+            <div class="loy-def">
+              <div class="loy-def-term">Enrollment Tier</div>
+              <div class="loy-def-desc">The DashPass program tier the merchant is enrolled in. Higher tiers unlock better placement, featured badges, and priority in DashPass member feeds.</div>
+              <div class="loy-def-impact">Unenrolled or lower-tier merchants are deprioritized in DashPass member search and homepage carousels.</div>
+            </div>
+
+            <div class="loy-def">
+              <div class="loy-def-term">Consumer Savings Rate</div>
+              <div class="loy-def-desc">Average $ saved per DashPass order at this merchant. Drives repeat behavior — consumers return to merchants where DashPass delivers meaningful value.</div>
+              <div class="loy-def-impact">Below-average savings rate = lower incentive for DashPass members to choose this restaurant vs. competitors.</div>
+            </div>
+          </div>
+
+          <div class="loy-panel">
+            <div class="loy-panel-title">Thresholds · DashPass Selection Rate</div>
+
+            <div class="loy-threshold">
+              <div class="loy-dot green"></div>
+              <div>
+                <div class="loy-threshold-range">≥ 60% &nbsp;·&nbsp; Optimal</div>
+                <div class="loy-threshold-why">Strong DashPass penetration. Merchant is well-positioned in member feeds and benefiting from the subscription flywheel. Maintain through competitive pricing and enrollment tier.</div>
+              </div>
+            </div>
+
+            <div class="loy-threshold">
+              <div class="loy-dot amber"></div>
+              <div>
+                <div class="loy-threshold-range">40 – 59% &nbsp;·&nbsp; Needs Attention</div>
+                <div class="loy-threshold-why">Below potential. Usually signals a pricing misalignment, lower enrollment tier, or that competitors nearby have better DashPass positioning. AO should review tier eligibility and consumer savings vs. peer set.</div>
+              </div>
+            </div>
+
+            <div class="loy-threshold">
+              <div class="loy-dot red"></div>
+              <div>
+                <div class="loy-threshold-range">&lt; 40% &nbsp;·&nbsp; Critical</div>
+                <div class="loy-threshold-why">Severely underperforming. Merchant is largely invisible to DashPass subscribers. Priority action: confirm enrollment status, audit pricing, and explore promotional visibility levers (featured placement, bonus earn events).</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="loy-panel">
+            <div class="loy-panel-title">Thresholds · DashPass Order Share</div>
+
+            <div class="loy-threshold">
+              <div class="loy-dot green"></div>
+              <div>
+                <div class="loy-threshold-range">≥ 35% &nbsp;·&nbsp; Optimal</div>
+                <div class="loy-threshold-why">More than 1 in 3 orders coming from DashPass members. Strong loyalty signal and resilient to demand fluctuations.</div>
+              </div>
+            </div>
+
+            <div class="loy-threshold">
+              <div class="loy-dot amber"></div>
+              <div>
+                <div class="loy-threshold-range">20 – 34% &nbsp;·&nbsp; Developing</div>
+                <div class="loy-threshold-why">Room to grow share. Check if the merchant is appearing in DashPass member browse flows and if the category is well-represented in their area.</div>
+              </div>
+            </div>
+
+            <div class="loy-threshold">
+              <div class="loy-dot red"></div>
+              <div>
+                <div class="loy-threshold-range">&lt; 20% &nbsp;·&nbsp; Low</div>
+                <div class="loy-threshold-why">DashPass members are largely not choosing this restaurant. Review menu completeness, photo quality, rating impact, and whether competitors are capturing that demand instead.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Column 2: AO Recommendations -->
+        <div style="display:flex;flex-direction:column;gap:20px;">
+
+          <div class="loy-panel">
+            <div class="loy-panel-title">AO Recommendations · When Selection Rate is Low</div>
+            <div class="loy-tip"><span class="loy-tip-num">01</span><div class="loy-tip-text"><strong>Confirm enrollment status first.</strong> An unenrolled merchant cannot appear in DashPass feeds at all. Check tier and re-pitch enrollment if lapsed.</div></div>
+            <div class="loy-tip"><span class="loy-tip-num">02</span><div class="loy-tip-text"><strong>Benchmark pricing vs. nearby competitors.</strong> If competitors offer deeper DashPass discounts, consumers will select them first. Frame the conversation around share loss, not just the program itself.</div></div>
+            <div class="loy-tip"><span class="loy-tip-num">03</span><div class="loy-tip-text"><strong>Surface the ROI story.</strong> Show the Mx total incremental revenue from DashPass members vs. non-members. Higher order frequency and basket size usually close the hesitation.</div></div>
+            <div class="loy-tip"><span class="loy-tip-num">04</span><div class="loy-tip-text"><strong>Propose a featured placement test.</strong> Short-term visibility boost (2–4 weeks) with before/after comparison gives the Mx a concrete data point to evaluate the channel.</div></div>
+          </div>
+
+          <div class="loy-panel">
+            <div class="loy-panel-title">AO Recommendations · When Order Share is Low</div>
+            <div class="loy-tip"><span class="loy-tip-num">01</span><div class="loy-tip-text"><strong>Review discoverability signals.</strong> Low ratings, incomplete menus, or poor photos suppress a merchant in DashPass browse. Ops fixes here have outsized loyalty impact.</div></div>
+            <div class="loy-tip"><span class="loy-tip-num">02</span><div class="loy-tip-text"><strong>Use peer benchmarks as urgency.</strong> "Comparable QSR restaurants in your trade zone are seeing 35% DashPass share — you're at 18%" creates a concrete FOMO anchor without being adversarial.</div></div>
+            <div class="loy-tip"><span class="loy-tip-num">03</span><div class="loy-tip-text"><strong>Propose a DashPass promo event.</strong> A limited bonus earn or free delivery window for DashPass members drives trial from subscribers who haven't ordered from this merchant before.</div></div>
+            <div class="loy-tip"><span class="loy-tip-num">04</span><div class="loy-tip-text"><strong>Connect DashPass share to GOV conversation.</strong> DashPass member orders are additive — they don't cannibalize existing demand. Frame share growth as net-new revenue, not a trade-off.</div></div>
+          </div>
+
+          <div class="loy-panel">
+            <div class="loy-panel-title">Why Loyalty Matters · Key Talking Points</div>
+            <div class="loy-tip"><span class="loy-tip-num">▸</span><div class="loy-tip-text"><strong>DashPass members order 2–3× more frequently</strong> than non-subscribers — high share = a more predictable, recurring revenue stream for the merchant.</div></div>
+            <div class="loy-tip"><span class="loy-tip-num">▸</span><div class="loy-tip-text"><strong>Higher basket sizes.</strong> DashPass members typically spend more per order because the delivery fee is already covered — they're less price-sensitive on item selection.</div></div>
+            <div class="loy-tip"><span class="loy-tip-num">▸</span><div class="loy-tip-text"><strong>Platform visibility advantage.</strong> Enrolled merchants get preferential treatment in homepage carousels, "For You" feeds, and category browse — organic traffic they can't buy through ads alone.</div></div>
+            <div class="loy-tip"><span class="loy-tip-num">▸</span><div class="loy-tip-text"><strong>Competitive moat.</strong> Once a consumer habitually orders from a restaurant via DashPass, switching costs increase. Capturing that habit early is a durable retention lever.</div></div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -4971,6 +5130,7 @@ function render() {
         if (!el) return;
         if (cfg.sections.includes(id)) {
           if (id === 'sec-serve') el.style.display = (currentPage === 'merchant') ? 'block' : 'none';
+          else if (id === 'sec-loyalty-tips') el.style.display = (currentPage === 'loyalty') ? 'block' : 'none';
           else el.style.removeProperty('display');
         }
         else el.style.display = 'none';
@@ -10591,7 +10751,7 @@ const PAGE_MAP = {
   summary:    { sections: ['sec-summary','sec-notes','wow-summary','history-section'], tableau: null,        title: 'QSR OKR <em>Summary</em>',                eyebrow: 'IAM · QSR Team' },
   marketing:  { sections: ['sec-levers','sec-pipeline-pacing','sec-whatif','sec-detractors'], tableau: 'tb-mktg', title: 'Marketing <em>Revenue</em>',           eyebrow: 'IAM · QSR Team' },
   outputs:    { sections: ['sec-forecast'], tableau: null,                                                  title: 'Outputs &amp; <em>Inputs</em>',             eyebrow: 'IAM · QSR Team' },
-  loyalty:    { sections: ['business-drivers'], tableau: 'tb-loyalty', loyaltyOnly: true,                  title: 'Loyalty <em>Campaigns</em>',               eyebrow: 'IAM · QSR Team' },
+  loyalty:    { sections: ['business-drivers','sec-loyalty-tips'], tableau: 'tb-loyalty', loyaltyOnly: true,                  title: 'Loyalty <em>Campaigns</em>',               eyebrow: 'IAM · QSR Team' },
   merchant:   { sections: ['sec-detractors','sec-soft-churn','sec-pipeline-pacing','sec-serve'], tableau: null,         title: 'Merchant <em>Insights</em>',               eyebrow: 'IAM · QSR Team' },
   engagement: { sections: ['sec-mxeng'], tableau: null,                                                     title: 'GOV <em>Engagement</em>',                  eyebrow: 'IAM · QSR Team' },
   levers:     { sections: ['sec-levers','sec-pipeline-pacing'], tableau: null,                              title: 'Gaps &amp; <em>Levers</em>',               eyebrow: 'IAM · QSR Team' },
@@ -10602,7 +10762,7 @@ const PAGE_MAP = {
 const ALL_PAGE_SECTIONS = [
   'sec-summary','sec-notes','sec-forecast','sec-levers','sec-pipeline-pacing',
   'sec-detractors','sec-soft-churn','sec-dpleads','sec-whatif','sec-mxeng',
-  'wow-summary','history-section','business-drivers','sec-serve'
+  'wow-summary','history-section','business-drivers','sec-serve','sec-loyalty-tips'
 ];
 
 // Upload-area elements shown only on Uploads tab
@@ -10643,7 +10803,12 @@ function showPage(page, linkEl) {
   const dz = document.getElementById('dropzone');
   if (dz) dz.style.display = cfg.uploadFocus ? '' : 'none';
 
-  // sec-serve: self-manages its empty state, force display after general loop
+  // sec-serve + sec-loyalty-tips: self-managed sections, force display after general loop
+  const loyTipsSection = document.getElementById('sec-loyalty-tips');
+  if (loyTipsSection) {
+    loyTipsSection.style.display = (page === 'loyalty') ? 'block' : 'none';
+    loyTipsSection.classList.toggle('visible', page === 'loyalty');
+  }
   const serveSection = document.getElementById('sec-serve');
   if (serveSection) {
     serveSection.style.display = (page === 'merchant') ? 'block' : 'none';
