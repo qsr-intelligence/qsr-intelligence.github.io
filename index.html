@@ -3520,7 +3520,7 @@
       <div class="tldr-marquee" id="summary-marquee"></div>
       <div class="tldr-sub" id="summary-sub"></div>
       <div class="tldr-wow" id="summary-wow" style="display:none"></div>
-      <div id="serve-summary-widget" style="display:none;"></div>
+      <div id="serve-summary-widget"></div>
       <div class="milestone-banner" id="milestone-banner" style="display:none"></div>
       <div class="tldr-stats" id="summary-stats"></div>
     </div>
@@ -10907,7 +10907,26 @@ function renderServeSummary() {
   const el = document.getElementById('serve-summary-widget');
   if (!el) return;
   const sd = state.serveData;
-  if (!sd) { el.style.display = 'none'; return; }
+  if (!sd) {
+    el.style.display = '';
+    el.innerHTML = `<div class='serve-summary-wrap' style='border-style:dashed;opacity:.7;'>
+      <div class='serve-summary-head'>
+        <span class='serve-summary-title'>SERVE · Team Scorecard</span>
+        <span style='font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--amber);'>Coming Soon</span>
+      </div>
+      <div style='display:flex;flex-direction:column;gap:8px;'>
+        ${SERVE_DIMS.map(d=>`<div class='serve-dim-row'>
+          <span class='serve-dim-key' style='color:var(--rule-soft);'>${d.short}</span>
+          <div class='serve-bar-track'><div class='serve-bar-fill' style='width:0%;background:var(--rule-soft);'></div></div>
+          <span class='serve-dim-val' style='color:var(--ink-faint);'>—</span>
+        </div>`).join('')}
+      </div>
+      <div class='serve-coaching-flag' style='border-left-color:var(--amber);background:rgba(179,115,10,0.06);'>
+        Upload a SERVE scorecard CSV from <strong>Uploads &amp; Library</strong> to populate coaching insights and call themes.
+      </div>
+    </div>`;
+    return;
+  }
 
   const dimBars = SERVE_DIMS.map(d => {
     const val = sd.avgScores[d.key];
