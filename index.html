@@ -10644,7 +10644,7 @@ function showPage(page, linkEl) {
   // Empty state: hide on tabs that don't need a data upload prompt
   const emptyState = document.getElementById('empty-state');
   if (emptyState) {
-    const hideEmptyOn = ['bizdriv','loyalty','engagement','bizdriv'];
+    const hideEmptyOn = ['bizdriv','loyalty','engagement','bizdriv','levers','merchant','outputs'];
     if (hideEmptyOn.includes(page)) emptyState.style.display = 'none';
     else emptyState.style.removeProperty('display');
   }
