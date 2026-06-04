@@ -10536,6 +10536,10 @@ function showPage(page, linkEl) {
   const dz = document.getElementById('dropzone');
   if (dz) dz.style.display = cfg.uploadFocus ? '' : 'none';
 
+  // Team scope bar: only on Summary (one team selector per tab)
+  const scopeBar = document.getElementById('team-scope-bar');
+  if (scopeBar) scopeBar.style.display = (page === 'summary') ? '' : 'none';
+
   // Activate tableau tab if specified
   if (cfg.tableau) {
     document.querySelectorAll('.tableau-tab').forEach(t => t.classList.remove('active'));
