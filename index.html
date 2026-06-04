@@ -10793,9 +10793,9 @@ function showPage(page, linkEl) {
     serveSection.classList.toggle('visible', page === 'merchant');
   }
 
-  // Team scope bar: only on Summary (one team selector per tab)
+  // Team scope bar: visible on all tabs (rep listing already hidden via ts-meta)
   const scopeBar = document.getElementById('team-scope-bar');
-  if (scopeBar) scopeBar.style.display = (page === 'summary') ? '' : 'none';
+  if (scopeBar) scopeBar.style.display = '';
 
   // Empty state: hide on tabs that don't need a data upload prompt
   const emptyState = document.getElementById('empty-state');
